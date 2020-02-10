@@ -4,8 +4,7 @@
     "private": true,
     "scripts": {
         "start": "nodemon ./bin/www",
-        "pug-lint": "pug-lint",
-        "install": "npm i --unsafe-perms"
+        "pug-lint": "pug-lint"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.12.1",
