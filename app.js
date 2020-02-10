@@ -24,8 +24,7 @@ const i18nExt = require('./extension/i18n-ext');
 var Guest = require('./models/guest');
 
 // ensure admin user
-Auth.setupRoles();
-Auth.setupAdmin();
+Auth.setupRoles().then(Auth.setupAdmin);
 
 // express app setup
 debug('begin app setup');
