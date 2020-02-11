@@ -1,7 +1,10 @@
 extends main_layout.pug
 block content
-  nav.navbar.navbar-dark
-    a.btn.btn-secondary(href='/manage')= __('Manage')
-    a.btn.btn-primary(href='/invite')= __('Invite')
+  nav.navbar.navbar-dark.bg-dark
+    a.navbar-brand(href="#")
+      img.d-inline-block.align-top(src="/img/logo30.png" width="30" height="30" alt="")
+    form.form-inline
+      a.btn.btn-outline-success.rounded-0.mx-2(href='/invite')= __('Invite')
+      a.btn.btn-outline-secondary.rounded-0(href='/manage')= __('Manage')
 
   include content/home.pug

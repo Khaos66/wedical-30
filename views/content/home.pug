@@ -1,8 +1,40 @@
-main.jumbotron.text-center(role='main')
-  h1.display-2.animated.infinite.slower.shake= __('PARTY')
-  h1.display-2= __('hard')
-  p.lead= __('ORGANIZE')
-  p.lead!= __('harder')
-  hr.my-4
-  p= __('If you got an invite please click here')
-  a.btn.btn-primary.btn-lg.w-25.btn-jumbo(href='/invite')= __('Invite')
+mixin comment(colSize, title, text, smallText)
+    div.col.col-12.my-4(class=colSize)
+        div.neon-blue.h1
+            em= title
+        div.text-light.h5 &bdquo; #{text} &ldquo;
+        if smallText
+            div.text-light
+                small= smallText
+
+main.text-center(role='main')
+  .container
+    .row.justify-content-md-center
+        .col.col-lg-6.col-lg-auto
+            .container.bg-light.my-5
+                .row.bg-banner
+                    .col
+                        img(src='/img/benny.png').m-2
+                .row.bg-black &nbsp;
+                .row.bg-banner
+                    .col
+                        img(src=`/img/gets-${locale}.png`).m-2
+                .row.bg-black &nbsp;
+                .row.bg-banner
+                    .col
+                        img(src='/img/30.png').m-2
+    .row
+        .col
+            a.btn-invite(href='/invite') 
+                div.mx-auto
+    .row
+        +comment('col-md-4', 'Joda', "Zusagen... du sollst")
+        +comment('col-md-4', 'Buzz Lightyear', "Bis zum Aril und noch viel weiter")
+        +comment('col-md-4', 'Thor', "Der Hammer!")
+
+    .row
+        +comment('col-md-6', 'Batman', "Ich bin Batman")
+        +comment('col-md-6', 'Gandalf', "Duuu... kannst nicht... vorbei!!", "Ohne eine Einladung")
+
+    .row
+        .col.my-5 &nbsp;
