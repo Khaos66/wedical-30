@@ -169,6 +169,8 @@ app.use(function(req, res, next) {
         // genders & ages
         res.locals.genders = Guest.genders;
         res.locals.ages = Guest.ages;
+        //
+        res.locals.title = 'Benny wird 30';
     }
     next();
 });
