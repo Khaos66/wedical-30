@@ -19,16 +19,20 @@ body.startpage #grid
 
 .btn-invite div
     position: relative
-    background-image: url('/img/invite-s.png')
-    width: 460px
-    height: 120px
-
+    // Very small phones
+    background-image: url('/img/invite-xs.png')
+    width: 334px
+    height: 108px
+    // Small things
+    @media (min-width: 1020px)
+        background-image: url('/img/invite-s.png')
+        width: 460px
+        height: 120px
     // Small devices (landscape phones, less than 768px)
     @media (min-width: 768px)
         background-image: url('/img/invite-m.png')
         width: 657px
         height: 232px
-
     // Medium devices (tablets, less than 992px)
     @media (min-width: 992px)
         background-image: url('/img/invite-l.png')
@@ -36,13 +40,11 @@ body.startpage #grid
         height: 335px
 
 .btn-invite:hover div
-    background-image: url('/img/invite-glow-s.png')
-
-    // Small devices (landscape phones, less than 768px)
+    background-image: url('/img/invite-glow-xs.png')
+    @media (min-width: 1020px)
+        background-image: url('/img/invite-glow-s.png')
     @media (min-width: 768px)
         background-image: url('/img/invite-glow-m.png')
-
-    // Medium devices (tablets, less than 992px)
     @media (min-width: 992px)
         background-image: url('/img/invite-glow-l.png')
 
