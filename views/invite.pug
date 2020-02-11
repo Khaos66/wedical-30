@@ -5,9 +5,27 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
     title Test
     link(rel='stylesheet', href='/styles/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/styles/fontawesome.min.css')
+    link(rel='stylesheet', href='/styles/animate.min.css')
     link(rel='stylesheet', href='/styles/main.css')
-  body
-    p test
+    link(rel='stylesheet', href='/styles/buttons.css')
+    link(rel='stylesheet', href='/styles/style.css')
+  body.invite
+    .container
+      .row
+        .col
+          .alert.alert-warning.my-4
+            h4 
+              i.fas.fa-cogs
+              | 
+              | Noch nicht fertig!
+            p Leider ist diese Seite noch nicht ganz fertig
+            hr
+            p.mb-0 
+              | Bitte komm später nochmal wieder
+              | 
+              i.fas.fa-rocket
+            
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.bundle.min.js')
     script(src='/js/main.js')
