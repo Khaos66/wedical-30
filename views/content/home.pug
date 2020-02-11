@@ -25,16 +25,16 @@ main.text-center(role='main')
                         img(src='/img/30.png').m-2
     .row
         .col
-            a.btn-invite(href='/invite') 
+            a(href='/invite', class=`btn-invite-${locale}`) 
                 div.mx-auto
     .row
-        +comment('col-md-4', 'Joda', "Zusagen... du sollst")
-        +comment('col-md-4', 'Buzz Lightyear', "Bis zum April und noch viel weiter")
-        +comment('col-md-4', 'Thor', "Der Hammer!")
+        +comment('col-md-4', 'Joda', __("Zusagen... du sollst"))
+        +comment('col-md-4', 'Buzz Lightyear', __("Bis zum April und noch viel weiter"))
+        +comment('col-md-4', 'Thor', __("Der Hammer!"))
 
     .row
-        +comment('col-md-6', 'Batman', "Ich bin Batman")
-        +comment('col-md-6', 'Gandalf', "Duuu... kannst nicht... vorbei!!", "Ohne eine Einladung")
+        +comment('col-md-6', 'Batman', __("Ich bin Batman"))
+        +comment('col-md-6', 'Gandalf', __("Duuu... kannst nicht... vorbei!!"), __("Ohne eine Einladung"))
 
     .row
         .col.my-5 &nbsp;
