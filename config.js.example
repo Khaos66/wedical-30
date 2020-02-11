@@ -4,12 +4,16 @@ const config = {
   secret: 'UseASecureAndLongString',
   // base URL used in links in emails
   baseUrl: 'http://localhost:3000/',
+  // Title shown in Browser
+  title: 'Wedical',
   admin: {
     // email address of admin user
     email: 'admin@web.org',
     // initial password of admin
     passwd: 'admin',
   },
+  // locales you want to support (icon collection: https://www.iconfinder.com/iconsets/195-flat-flag-psd-icons)
+  locales: ['en', 'de'],
 };
 
 module.exports = config;

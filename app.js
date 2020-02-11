@@ -19,6 +19,7 @@ const sassMiddleware = require('node-sass-middleware');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const i18n = require('i18n');
+const config = require('./config');
 const { Auth } = require('./auth');
 const i18nExt = require('./extension/i18n-ext');
 var Guest = require('./models/guest');
@@ -130,29 +131,35 @@ app.set('view engine', 'pug');
 
 // i18n middleware
 app.use(i18n.init);
-i18n.configure({
-    locales: ['en', 'de'],
+var i18nOptions = {
+    locales: config.locales,
     defaultLocale: 'en',
+    queryParameter: 'lang',
+    cookie: 'lang',
     directory: __dirname + '/locales/backend',
     register: global,
-});
+};
+i18n.configure(i18nOptions);
 
 // express helper for natively supported engines
 app.use(function(req, res, next) {
     if (req.path.indexOf('.') === -1) {
+        // Save user locale to cookie
+        if (req.query.lang && i18nOptions.locales.includes(req.query.lang)) {
+            res.cookie('lang', req.query.lang, { maxAge: 900000, httpOnly: true });
+        }
         // Load a hierarchy of locales into i18n module
-        i18nExt.configureHierarchy(__dirname + '/locales', req.path, {
-            locales: ['en', 'de'],
-            defaultLocale: 'en',
-            extension: '.json',
-            register: global,
-        });
+        i18nExt.configureHierarchy(__dirname + '/locales', req.path, i18nOptions);
 
         debug('forward locals to template engine');
         // i18n __()
         res.locals.__ = res.__ = function() {
             return i18n.__.apply(req, arguments);
         };
+        // page title
+        res.locals.title = config.title;
+        // possible locales
+        res.locals.locales = config.locales;
         // session
         res.locals.session = req.session;
         // query
@@ -169,8 +176,6 @@ app.use(function(req, res, next) {
         // genders & ages
         res.locals.genders = Guest.genders;
         res.locals.ages = Guest.ages;
-        //
-        res.locals.title = 'Benny wird 30';
     }
     next();
 });

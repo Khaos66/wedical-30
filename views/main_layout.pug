@@ -4,13 +4,9 @@ html
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
     title= title
-    link(rel='stylesheet', href='/styles/bootstrap.min.css')
-    link(rel='stylesheet', href='/styles/animate.min.css')
-    link(rel='stylesheet', href='/styles/main.css')
-    link(rel='stylesheet', href='/styles/buttons.css')
-    link(rel='stylesheet', href='/styles/style.css')
+    include _commonStyles.pug
+
   body.startpage
+    block nav
     block content
-    script(src='/js/jquery.min.js')
-    script(src='/js/bootstrap.bundle.min.js')
-    script(src='/js/main.js')
+    include _commonScripts.pug
