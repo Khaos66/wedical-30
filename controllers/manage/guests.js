@@ -49,6 +49,7 @@ async function addGuests(req, res) {
                 name: name,
                 age: req.body[`guest${index}age`],
                 gender: req.body[`guest${index}gender`],
+                expected: req.body[`guest${index}expected`],
                 group: req.body.group,
                 address: req.body.address,
             });

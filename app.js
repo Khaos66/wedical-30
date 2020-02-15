@@ -11,6 +11,7 @@ if (!fs.existsSync(__dirname + '/config.js')) {
 
 const createError = require('http-errors');
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const helmet = require('helmet');
 const flash = require('connect-flash');
 const path = require('path');
@@ -75,6 +76,12 @@ app.use('/js/jquery.form.min.js',
 app.use('/js/jquery.form.min.js.map',
     express.static(__dirname +
         '/node_modules/jquery-form/dist/jquery.form.min.js.map'));
+app.use('/js/jquery.quicksearch.min.js',
+    express.static(__dirname +
+        '/node_modules/jquery.quicksearch/dist/jquery.quicksearch.min.js'));
+app.use('/js/jquery.quicksearch.min.js.map',
+    express.static(__dirname +
+        '/node_modules/jquery.quicksearch/dist/jquery.quicksearch.min.js.map'));
 // Bootstrap
 app.use('/js/bootstrap.bundle.min.js',
     express.static(__dirname +
@@ -173,9 +180,10 @@ app.use(function(req, res, next) {
         if (Object.entries(res.locals.dangers).length !== 0) { debug('dangers: ' + res.locals.dangers); }
         if (Object.entries(res.locals.warnings).length !== 0) { debug('warnings: ' + res.locals.warnings); }
         if (Object.entries(res.locals.errors).length !== 0) { debug('errors: ' + res.locals.errors); }
-        // genders & ages
+        // genders, ages, expectations
         res.locals.genders = Guest.genders;
         res.locals.ages = Guest.ages;
+        res.locals.expectations = Guest.expectations;
     }
     next();
 });
@@ -190,6 +198,12 @@ app.use(sassMiddleware({
 
 // serve static files.
 app.use(express.static(path.join(__dirname, 'public')));
+
+// file uploads
+app.use(fileUpload({
+    // 5MB Limit
+    limits: { fileSize: 5 * 1024 * 1024 },
+}));
 
 // Use the controllers.
 app.use(require('./controllers'));

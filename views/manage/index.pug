@@ -4,38 +4,75 @@ include ../includes/_icons.pug
 
 mixin tile(icon,text,link)
   a.btn.btn-dark.btn.btn-sq-lg.float-left.m-2(href=link)
-    i.fa.fa-5x(class=icon)
+    i.fa.fa-4x(class=icon)
     hr.mb-2
-    div.font-weight-bold= text
+    div.font-weight-bold.h5= text
+      div
+        block
 
 block content
-  h2= __('Guests')
-    span.badge.badge-secondary.mx-2= guestCount
-  div.h5
-    if guestCount > 0
-      each count, gender in guestGenders
-        if count > 0
-          span.badge.badge-pill.badge-secondary.mx-1(data-toggle='tooltip', title=__(genders[gender]))
-            +genderIcon(gender)
-            |
-            |
-            = count
-      span= '|'
-      each count, age in guestAges
-        if count > 0
-          span.badge.badge-pill.badge-secondary.mx-1(data-toggle='tooltip', title=__(ages[age]))
-            +ageIcon(age)
-            |
-            |
-            = count
-  div.container.my-2
+  div.container.h5
     div.row
-      +tile('fa-user-friends', __('Guest List'), '/manage/guests')
-      +tile('fa-envelope-open-text', __('Invitations'), '/manage/invites')
+      div.col-4.col-md-2
+        strong= __('Guests')
+      div.col-8.col-md-10
+        if guestCount > 0
+          each count, gender in guestGenders
+            if count > 0
+              span.badge.badge-pill.badge-secondary.mx-1(data-toggle='tooltip', title=__(genders[gender]))
+                +genderIcon(gender)
+                |
+                |
+                = count
+          span= '|'
+          each count, age in guestAges
+            if count > 0
+              span.badge.badge-pill.badge-secondary.mx-1(data-toggle='tooltip', title=__(ages[age]))
+                +ageIcon(age)
+                |
+                |
+                = count
+          span= '|'
+          each count, expected in guestsExpected
+            if count > 0
+              span.badge.badge-pill.badge-secondary.mx-1(data-toggle='tooltip', title=__(expectations[expected]))
+                +expectationIcon(expected)
+                |
+                |
+                = count
+    div.row.my-2
+      div.col-4.col-md-2
+        strong= __('Invites')
+      div.col-8.col-md-10
+        each count, itype in invites
+          if count > 0
+            span.badge.badge-pill.badge-secondary.mx-1
+              +inviteIcon(itype)
+              |
+              |
+              = count
+
   hr
-  h2= __('Users')
-    span.badge.badge-secondary.mx-2= userCount
-  div.container.my-2
-    div.row
-      +tile('fa-users-cog', __('Users'), '/manage/users')
-      +tile('fa-user-tag', __('Roles'), '/manage/roles')
+
+  if (access.guests || access.invites || access.qrcode)
+    h2.pt-2= __('Guests')
+    div.container.my-2
+      div.row
+        if (access.guests)
+          +tile('fa-user-friends', __('Guest List'), '/manage/guests')
+            span.badge.badge-secondary.mx-2= guestCount
+        if (access.invites)
+          +tile('fa-envelope-open-text', __('Invitations'), '/manage/invites')
+            span.badge.badge-secondary.mx-2= `${inviteSum} (${inviteCount})`
+        if (access.qrcode)
+          +tile('fa-qrcode', __('QR-Code'), '/manage/qrcode')
+
+  if (access.users || access.roles)
+    h2.pt-4= __('Users')
+    div.container.my-2
+      div.row
+        if (access.users)
+          +tile('fa-users-cog', __('Users'), '/manage/users')
+            span.badge.badge-secondary.mx-2= userCount
+        if (access.roles)
+          +tile('fa-user-tag', __('Roles'), '/manage/roles')

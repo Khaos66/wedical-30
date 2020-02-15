@@ -1,15 +1,15 @@
-mixin editFormGroup(name, label)
+mixin editFormGroup(name, label, colWidth=10)
     div.form-group.row
         label.col-sm-2.col-form-label(for=name)= label
-        div.col-sm-10
+        div(class= `col-sm-${colWidth}`)
             block
 
-mixin editFormInput(name, label, placeholder, required=false, invalidMsg, type='text')
-    +editFormGroup(name, label)
+mixin editFormInput(name, label, placeholder, required=false, invalidMsg, type='text', colWidth=10, inputClass='form-control')
+    +editFormGroup(name, label, colWidth)
         div.input-group
             if required
-                input.form-control(type=type, name=name, placeholder= placeholder, required, autocomplete='off')
+                input(class=inputClass, type=type, name=name, placeholder= placeholder, required, autocomplete='off')
             else
-                input.form-control(type=type, name=name, placeholder= placeholder, autocomplete='off')
+                input(class=inputClass, type=type, name=name, placeholder= placeholder, autocomplete='off')
             if invalidMsg
                 div.invalid-feedback= invalidMsg

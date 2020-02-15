@@ -1,0 +1,6 @@
+extends ../manage_layout.pug
+
+block content
+    form.my-4.text-center(action='/manage/invites/qrprint', method='POST')
+        input(type='hidden', name='_csrf', value=csrfToken)
+        button.btn.btn-primary(type='submit')= 'Download PDF'

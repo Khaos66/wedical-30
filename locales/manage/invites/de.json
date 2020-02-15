@@ -1,1 +1,14 @@
-{}
+{
+    "Add Invite": "Einladung hinzufügen",
+    "Choose recipients from the guest list": "Wähle Empfänger aus der Gästeliste aus",
+    "Send a first-come first-in invite to a group of people": "Sende eine Kontingent-Einladung an eine Gruppe von Leuten",
+    "Amount of free tickets": "Anzahl der Plätze",
+    "Invitees": "Eingeladene",
+    "A descriptive title": "Ein beschreibender Titel",
+    "Remove Invite": "Einladung löschen",
+    "Remove this Invite?": "Diese Einladung entfernen?",
+    "Guests who recieved this invite will be left out...": "Gäste, die diese Einladung erhalten haben, werden nicht mehr in der Lage sein zuzusagen...",
+    "Edit Invite": "Einladung bearbeiten",
+    "Print QR Codes to place on invitations": "Drucke QR Codes für deine Einladungen",
+    "Print QR Codes": "QR Codes drucken"
+}

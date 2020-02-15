@@ -14,6 +14,11 @@ mixin genderBtn(gender, name)
         input(type='radio', name=name, value=gender, autocomplete='off')
         +genderIcon(gender)
 
+mixin expectationBtn(expectation, name, defaultValue)
+    label.btn.lazy-tooltip(class=`btn-expectation-${expectation} ${(defaultValue===expectation) ? 'active' : ''}`, data-toggle='tooltip', title=__(expectations[expectation]))
+        input(type='radio', name=name, value=expectation, autocomplete='off')
+        +expectationIcon(expectation)
+
 block content
     span.table-add.float-right.mb-3.mr-2
         a.text-success(href='#', data-toggle='modal', data-target='#addGuestModal')
@@ -21,16 +26,18 @@ block content
     table.data-table.table.table-responsive-md#guestsTable(data-page-length='25',
                                                         data-age-column='1'
                                                         data-gender-column='2'
-                                                        data-action-column='3'
+                                                        data-expected-column='3'
+                                                        data-action-column='4'
                                                         data-delete-modal='#deleteGuestModal'
                                                         data-edit-modal='#editGuestModal'
                                                         data-edit-form='#editGuestForm'
-                                                        data-group-column='4'
+                                                        data-group-column='5'
                                                         data-order='[[ 1, "asc" ]]',
                                                         data-ajax='/manage/guests/list',
-                                                        data-columns='[{"data": "name"},{"data": "age", "className": "dt-body-center"},{"data": "gender", "className": "dt-body-center"},{"data": "_id"},{"data": "group"}]')
+                                                        data-columns='[{"data": "name"},{"data": "age", "className": "dt-body-center"},{"data": "gender", "className": "dt-body-center"},{"data": "expected", "className": "dt-body-center"},{"data": "_id"},{"data": "group"}]')
         colgroup
             col(width='100%')
+            col(width='1')
             col(width='1')
             col(width='1')
             col(width='1')
@@ -40,6 +47,7 @@ block content
                 th= __('Name')
                 th= __('Age')
                 th= __('Gender')
+                th= __('Expected')
                 th= __('Action')
                 th Group
 
@@ -65,19 +73,25 @@ block content
             div.form-group
                 hr
             div.form-row.collapse#inputTemplate
-                div.form-group.col-sm-12.col-md-3.col-lg-6
+                div.form-group.col-sm-12.col-md-6.col-lg-4.mb-1.mb-md-2
                     input.form-control(type='text', name='guest%sname', placeholder=__('%s. Guest'))
-                div.form-group.col-sm-6.col-md-6.col-lg-4
+                div.form-group.col-sm-6.col-md-6.col-lg-4.mb-1.mb-md-2
                     div.btn-group.btn-group-toggle(data-toggle='buttons')
                         each text, age in ages
                             if age !== 'undefined'
                                 +ageBtn(age, 'guest%sage')
 
-                div.form-group.col-sm-6.col-md-3.col-lg-2
+                div.form-group.col-3.col-lg-2.mb-1.mb-md-2.mr-2.mr-sm-0.px-sm-0
                     div.btn-group.btn-group-toggle(data-toggle='buttons')
                         each text, gender in genders
                             if gender !== 'undefined'
                                 +genderBtn(gender, 'guest%sgender')
+
+                div.form-group.col-3.col-lg-2.px-sm-0
+                    div.btn-group.btn-group-toggle(data-toggle='buttons', data-default-value='unsure')
+                        each text, expectation in expectations
+                            if expectation !== 'undefined'
+                                +expectationBtn(expectation, 'guest%sexpected', 'unsure')
 
     +deleteModal('deleteGuestModal',
                 __('Remove Guest'),
@@ -113,5 +127,10 @@ block content
                     each text, age in ages
                         if age !== 'undefined'
                             +ageBtn(age, 'age')
+            +editFormGroup('expected', __('Expected'))
+                div.btn-group.btn-group-toggle(data-toggle='buttons')
+                    each text, expectation in expectations
+                        if expectation !== 'undefined'
+                            +expectationBtn(expectation, 'expected')
             +editFormGroup('updatedAt', __('Last Change'))
                 input.form-control-plaintext(type='text', readonly, name='updatedAt', data-format='datetime')

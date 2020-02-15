@@ -5,7 +5,25 @@
      */
     $.fn.resetFormFields = function() {
         return this.each(function() {
-            $(this).clearForm();
+            var form = $(this);
+            form.clearForm();
+            form.find('select').each(function() {
+                if ($(this).data('multiselect')) {
+                    $(this).data('multiselect').deselect_all();
+                }
+            });
+            form.find('.btn-group[data-default-value]').each(function() {
+                var group = $(this);
+                // set default radio button
+                group.find(`[type="radio"][value!="${group.data('defaultValue')}"]`).closest('label').removeClass('active');
+                var radio = group.find(`[type="radio"][value="${group.data('defaultValue')}"]`);
+                radio.prop('checked', true).closest('label').addClass('active');
+                // activate default section
+                var hideSelector = group.data('defaultHide');
+                var showSelector = group.data('defaultShow');
+                if (hideSelector) { $(hideSelector).removeClass('show'); }
+                if (showSelector) { $(showSelector).addClass('show'); }
+            });
         });
     };
 
@@ -107,7 +125,7 @@
                 // reset form data
                 form.find('input:not([type="checkbox"]):not([type="hidden"]):not([type="radio"])').val('');
                 form.find('input[type="radio"]').closest('label').removeClass('active');
-                form.find('input[type="checkbox"]').prop("checked", false);
+                form.find('input[type="checkbox"]').prop('checked', false);
                 // load data
                 $.ajax({
                     headers: { "CSRF-Token": getCSRF() },
@@ -122,7 +140,8 @@
                                     continue;
                                 }
                                 var inputs = form.find(`[name=${key}]`);
-                                inputs.not('[type="radio"]').each(function() {
+                                // text
+                                inputs.not('[type="radio"]').not('select').each(function() {
                                     var input = $(this);
                                     switch (input.data('format')) {
                                         case 'datetime':
@@ -134,9 +153,23 @@
                                     }
                                     input.val(value);
                                 });
-                                inputs.filter(`[type="radio"][value="${value}"]`).closest('label').addClass('active');
+                                // radio button group
+                                inputs.filter(`[type="radio"][value="${value}"]`).each(function() {
+                                    var radio = $(this);
+                                    radio.prop('checked', true).closest('label').addClass('active');
+                                    if (radio.data('toggle') === 'radio') {
+                                        $(radio.data('target')).removeClass('show');
+                                        $(radio.data('show')).addClass('show');
+                                    }
+                                });
+                                // multiselect
+                                inputs.filter('select').each(function() {
+                                    if ($(this).data('multiselect')) {
+                                        $(this).data('multiselect').select(value);
+                                    }
+                                });
                             }
-                            // set checkboxes in roles dialogs
+                            // set checkboxes in role dialogs
                             if (data.data.auth) {
                                 let checkboxes = form.find('input[type="checkbox"]');
                                 for (let authObj of data.data.auth) {
@@ -147,14 +180,14 @@
                                             checkboxes.each(function() {
                                                 let chk = $(this);
                                                 if (chk.attr('name').startsWith(chkName)) {
-                                                    chk.prop("checked", true);
+                                                    chk.prop('checked', true);
                                                 }
                                             });
                                         }
                                     }
                                 }
                             }
-                            // set checkboxes in roles dialogs
+                            // set checkboxes in user dialogs
                             if (data.data.roles) {
                                 let checkboxes = form.find('input[type="checkbox"]');
                                 for (let roleId of data.data.roles) {
@@ -172,6 +205,52 @@
                 });
             };
         });
+    };
 
+    /**
+     * @summary
+     * enable forms to load form data via AJAX
+     */
+    $.fn.quickMultiSelect = function() {
+        return this.each(function() {
+            var select = $(this);
+            var leftHeader = select.data('leftHeader') || 'Available';
+            var rightHeader = select.data('rightHeader') || 'Active';
+            var placeholder = select.data('placeholder') || 'Search...';
+            select.multiSelect({
+                selectableHeader: `<p class="h5">${leftHeader}</p><div><input type='text' class='list-search-input' autocomplete='off' placeholder='${placeholder}' novalidate></div>`,
+                selectionHeader: `<p class="h5">${rightHeader}</p><div><input type='text' class='list-search-input' autocomplete='off' placeholder='${placeholder}' novalidate></div>`,
+                cssClass: "list-form-control",
+                afterInit: function(ms) {
+                    var that = this,
+                        $selectableSearch = that.$selectableUl.prev().children('input'),
+                        $selectionSearch = that.$selectionUl.prev().children('input'),
+                        selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                        selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                        .on('keydown', function(e) {
+                            if (e.which === 40) {
+                                that.$selectableUl.focus();
+                                return false;
+                            }
+                        });
+                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                        .on('keydown', function(e) {
+                            if (e.which == 40) {
+                                that.$selectionUl.focus();
+                                return false;
+                            }
+                        });
+                },
+                afterSelect: function() {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                },
+                afterDeselect: function() {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                }
+            });
+        });
     };
 })(jQuery);

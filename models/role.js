@@ -62,6 +62,7 @@ Role.authorizationOptions = {
                 'options': {
                     'guests': 'Guests',
                     'invites': 'Invites',
+                    'qrcode': 'QR Code',
                     'users': 'Users',
                     'roles': 'Roles',
                 },

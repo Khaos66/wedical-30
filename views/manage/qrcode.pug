@@ -1,0 +1,45 @@
+extends manage_layout.pug
+
+include ../includes/_forms.pug
+
+block content
+    div.container.mb-4
+        div.row
+            div.col-12.col-md-6
+                form(action='/manage/qrcode', method='POST', enctype='multipart/form-data')
+                    input(type='hidden', name='_csrf', value=csrfToken)
+                    +editFormGroup('version', __('Size'))
+                        select.form-control(name='version')
+                            - for (var x = 1; x <= 40; x++)
+                                if qrcode.version === x
+                                    option(value=x, selected)= x
+                                else
+                                    option(value=x)= x
+                    +editFormGroup('errorCorrection', __('Error Correction'))
+                        select.form-control(name='errorCorrection')
+                            each text, level in errorLevels
+                                if qrcode.errorCorrection === level
+                                    option(value=level, selected)= __(text)
+                                else
+                                    option(value=level)= __(text)
+                    +editFormInput('logo', __('Logo'), __('Add a logo'), false, __('Not a valid image file'), 'file', 10, 'form-control-file')
+                    +editFormGroup('logoSize', __('Logo Size'))
+                        input.custom-range(type='range', name='logoSize', min=0, max=100, value=qrcode.logoSize)
+                    div
+                        button.btn.btn-primary(type='submit')= __('Save')
+                        if (qrcode.logo)
+                            a.btn.btn-danger.float-right(href='/manage/qrcode/dellogo')= __('Remove logo')
+            div.col-12.col-md-6.mt-4.mt-md-0
+                if (qrerr)
+                    div.alert.alert-danger
+                        h4.alert-heading= __('Validation error')
+                        p
+                            em= __('The QR code below might be invalid')
+                        p= __(qrerr)
+                if (qrsource)
+                    div.overflow-auto.text-center
+                        div.alert.alert-info(role='alert')
+                            h4.alert-heading= __('Random example')
+                            img(src=qrsource)
+                            hr
+                            p= __('You must not use this QR code for any invitation')

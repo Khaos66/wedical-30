@@ -10,8 +10,8 @@ lerna-debug.log*
 data/*.db
 
 # Compiled styles
-*.css
-*.css.map
+public/styles/*.css
+public/styles/*.css.map
 
 # actual config-file
 config.js
