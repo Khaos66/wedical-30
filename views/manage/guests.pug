@@ -44,11 +44,21 @@ block content
             col(width='1')
         thead
             tr
-                th= __('Name')
-                th= __('Age')
-                th= __('Gender')
-                th= __('Expected')
-                th= __('Action')
+                th
+                    i.fas.fa-signature.d-md-none(data-toggle='tooltip', data-title=__('Name'))
+                    span.d-none.d-md-block= __('Name')
+                th
+                    i.fas.fa-calendar-alt.d-md-none(data-toggle='tooltip', data-title=__('Age'))
+                    span.d-none.d-md-block= __('Age')
+                th
+                    i.fas.fa-venus-mars.d-md-none(data-toggle='tooltip', data-title=__('Gender'))
+                    span.d-none.d-md-block= __('Gender')
+                th
+                    i.fas.fa-theater-masks.d-md-none(data-toggle='tooltip', data-title=__('Expected'))
+                    span.d-none.d-md-block= __('Expected')
+                th
+                    i.fas.fa-asterisk.d-md-none(data-toggle='tooltip', data-title=__('Action'))
+                    span.d-none.d-md-block= __('Action')
                 th Group
 
     +wideModal('addGuestModal',

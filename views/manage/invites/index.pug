@@ -28,10 +28,18 @@ block content
             col(width='1')
         thead
             tr
-                th= __('Title')
-                th= __('Guests')
-                th= __('Code')
-                th= __('Action')
+                th
+                    i.fas.fa-signature.d-md-none(data-toggle='tooltip', data-title=__('Title'))
+                    span.d-none.d-md-block= __('Title')
+                th
+                    i.fas.fa-user-friends.d-md-none(data-toggle='tooltip', data-title=__('Guests'))
+                    span.d-none.d-md-block= __('Guests')
+                th
+                    i.fas.fa-key.d-md-none(data-toggle='tooltip', data-title=__('Code'))
+                    span.d-none.d-md-block= __('Code')
+                th
+                    i.fas.fa-asterisk.d-md-none(data-toggle='tooltip', data-title=__('Action'))
+                    span.d-none.d-md-block= __('Action')
 
     +wideModal('addInviteModal',
                 __('Add Invite'),

@@ -36,8 +36,12 @@ block content
             col(width='1')
         thead
             tr
-                th= __('Name')
-                th= __('Action')
+                th
+                    i.fas.fa-signature.d-md-none(data-toggle='tooltip', data-title=__('Name'))
+                    span.d-none.d-md-block= __('Name')
+                th
+                    i.fas.fa-asterisk.d-md-none(data-toggle='tooltip', data-title=__('Action'))
+                    span.d-none.d-md-block= __('Action')
 
     +modal('addRoleModal',
                 __('Add Role'),
