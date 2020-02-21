@@ -44,10 +44,18 @@ block content
       div.col-4.col-md-2
         strong= __('Invites')
       div.col-8.col-md-10
+        each count, state in inviteStates
+            if count > 0
+              span.badge.badge-pill.badge-dark.mx-1(data-toggle='tooltip', title=__(statesOfInvites[state]))
+                +inviteStateIcon(state)
+                |
+                |
+                = count
+        span= '|'
         each count, itype in invites
           if count > 0
-            span.badge.badge-pill.badge-secondary.mx-1
-              +inviteIcon(itype)
+            span.badge.badge-pill.badge-secondary.mx-1(data-toggle='tooltip', title=__(typesOfInvites[itype]))
+              +inviteTypeIcon(itype)
               |
               |
               = count

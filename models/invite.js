@@ -129,4 +129,11 @@ Invite.ensureIndex({ fieldName: 'token', unique: true });
 Invite.use(Timestamps);
 Invite.use(ModelSanitizer);
 
+// all possible invite types
+Invite.types = { 'guestlist': 'Guest with an invite', 'wildcard': 'Tickets'};
+
+// all possible invite states
+Invite.states = { 'open': 'Open', 'accepted': 'Accepted', 'declined': 'Declined'};
+
+
 module.exports = Invite;

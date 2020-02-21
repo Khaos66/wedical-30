@@ -35,10 +35,19 @@ mixin expectationIcon(expectation)
         when 'unexpected'
             i.fas.fa-thumbs-down
 
-mixin inviteIcon(itype)
+mixin inviteTypeIcon(itype)
     case itype
         when 'guestlist'
             i.fas.fa-user-friends
         when 'wildcard'
             i.fas.fa-ticket-alt
+            
+mixin inviteStateIcon(state)
+    case state
+        when 'open'
+            i.fas.fa-envelope
+        when 'accepted'
+            i.fas.fa-check.text-success
+        when 'declined'
+            i.fas.fa-times.text-danger
 

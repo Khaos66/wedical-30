@@ -23,6 +23,7 @@ router.get('/',
 
         let allInvites = await Invite.find();
         let invites = dataExt.countBy(allInvites, (g) => g.type, ['guestlist', 'wildcard'], (g) => g.type === 'guestlist' ? g.guests.length : g.tickets);
+        let inviteStates = dataExt.countBy(allInvites, (g) => g.state);
 
         res.render('manage/index', {
             guestCount: allGuests.length,
@@ -32,6 +33,7 @@ router.get('/',
             inviteCount: allInvites.length,
             inviteSum: dataExt.sum(invites),
             invites: invites,
+            inviteStates: inviteStates,
             userCount: await User.count(),
             access: {
                 guests: req.user.Authorization.check('manage', { 'Segment': 'users' }),
@@ -39,7 +41,12 @@ router.get('/',
                 qrcode: req.user.Authorization.check('manage', { 'Segment': 'qrcode' }),
                 users: req.user.Authorization.check('manage', { 'Segment': 'users' }),
                 roles: req.user.Authorization.check('manage', { 'Segment': 'roles' }),
-            }
+            },
+            genders: Guest.genders,
+            ages: Guest.ages,
+            expectations: Guest.expectations,
+            typesOfInvites: Invite.types,
+            statesOfInvites: Invite.states,
         });
     });
 /*

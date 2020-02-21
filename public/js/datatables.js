@@ -117,6 +117,25 @@
                 });
             }
 
+            // data-state-column
+            if (typeof table.data('stateColumn') === 'number') {
+                var stateColumn = table.data('stateColumn');
+                options.columnDefs.push({
+                    "targets": stateColumn,
+                    "render": function(data, type, row, meta) {
+                        switch (data) {
+                            case 'open':
+                                return '<i class="fas fa-envelope"></i>';
+                            case 'accepted':
+                                return '<i class="fas fa-check text-success"></i>';
+                            case 'declined':
+                                return '<i class="fas fa-times text-danger"></i>';
+                        }
+                        return '';
+                    }
+                });
+            }
+
             // data-action-column
             if (typeof table.data('actionColumn') === 'number') {
                 var actionColumn = table.data('actionColumn');

@@ -13,21 +13,26 @@ block content
             i.fas.fa-plus.fa-2x(aria-hidden='true')
 
     table.data-table.table.table-responsive-md#invitesTable(data-page-length='25',
-                                                        data-invitee-column='1'
-                                                        data-action-column='3'
+                                                        data-invitee-column='2'
+                                                        data-state-column='0'
+                                                        data-action-column='4'
                                                         data-delete-modal='#deleteInviteModal'
                                                         data-edit-modal='#editInviteModal'
                                                         data-edit-form='#editInviteForm'
                                                         data-order='[[ 0, "asc" ]]',
                                                         data-ajax='/manage/invites/list',
-                                                        data-columns='[{"data": "title"},{"data": "guests.length"},{"data": "token"},{"data": "_id"}]')
+                                                        data-columns='[{"data": "state", "className": "dt-body-center"},{"data": "title"},{"data": "guests.length"},{"data": "token"},{"data": "_id"}]')
         colgroup
+            col(width='1')
             col(width='50%')
             col(width='25%')
             col(width='25%')
             col(width='1')
         thead
             tr
+                th
+                    i.fas.fa-envelope-open.d-md-none(data-toggle='tooltip', data-title=__('State'))
+                    span.d-none.d-md-block= __('State')
                 th
                     i.fas.fa-signature.d-md-none(data-toggle='tooltip', data-title=__('Title'))
                     span.d-none.d-md-block= __('Title')
