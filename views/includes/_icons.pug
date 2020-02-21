@@ -51,3 +51,11 @@ mixin inviteStateIcon(state)
         when 'declined'
             i.fas.fa-times.text-danger
 
+mixin guestStateIcon(state)
+    case state
+        when 'invited'
+            i.fas.fa-envelope
+        when 'attending'
+            i.fas.fa-check.text-success
+        when 'absent'
+            i.fas.fa-times.text-danger

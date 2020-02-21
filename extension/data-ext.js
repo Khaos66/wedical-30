@@ -24,6 +24,12 @@ module.exports = (function() {
 
         for (let entry of collection) {
             let value = selector(entry);
+            if (keys) {
+                if (keys.indexOf(value) < 0) {
+                    continue;
+                }
+            }
+
             let increment = valueSelector(entry);
             if (sums[value]) {
                 sums[value] += increment;

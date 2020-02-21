@@ -16,7 +16,7 @@ const ModelSanitizer = require('../extension/model-sanitizer');
  * - gender
  * - age
  * - expected
- * - attendance (unkown, absent, attending)
+ * - status
  */
 class Guest extends Model {
     /**
@@ -48,7 +48,7 @@ class Guest extends Model {
                 gender: '',
                 age: '',
                 expected: 'unsure',
-                attendance: 'unknown'
+                status: ''
             },
         });
     }
@@ -72,6 +72,9 @@ Guest.genders = { 'undefined': 'Undefined', 'm': 'Male', 'd': 'Diverse', 'f': 'F
 Guest.ages = { 'undefined': 'Undefined', 'baby': 'Baby', 'child': 'Child', 'teen': 'Teen', 'youndAdult': 'Young Adult', 'adult': 'Adult', 'senior': 'Senoir' };
 
 // all possible expectations
-Guest.expectations = { 'expected': 'Will sure come', 'unsure': 'Might come', 'unexpected': 'Might not come'} 
+Guest.expectations = { 'expected': 'Will sure come', 'unsure': 'Might come', 'unexpected': 'Might not come' };
+
+// all possible states
+Guest.states = { 'invited': 'Invited', 'absent': 'Absent', 'attending': 'Attending' };
 
 module.exports = Guest;

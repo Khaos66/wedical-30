@@ -16,6 +16,14 @@ block content
       div.col-4.col-md-2
         strong= __('Guests')
       div.col-8.col-md-10
+        each count, state in guestStates
+            if count > 0
+              span.badge.badge-pill.badge-dark.mx-1(data-toggle='tooltip', title=__(statesOfGuests[state]))
+                +guestStateIcon(state)
+                |
+                |
+                = count
+        span= '|'
         if guestCount > 0
           each count, gender in guestGenders
             if count > 0

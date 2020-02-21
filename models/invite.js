@@ -59,7 +59,7 @@ class Invite extends Model {
         for(var guestId of this.guests) {
             var guest = await Guest.findOne({_id: guestId});
             if (guest != null) {
-                guest.attendance = 'absent';
+                guest.status = 'absent';
                 await guest.save();
             }
         }
@@ -74,7 +74,7 @@ class Invite extends Model {
         for(var guestId of this.guests) {
             var guest = await Guest.findOne({_id: guestId});
             if (guest != null) {
-                guest.attendance = 'attending';
+                guest.status = 'attending';
                 await guest.save();
             }
         }

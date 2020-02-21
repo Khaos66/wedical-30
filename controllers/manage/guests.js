@@ -117,7 +117,8 @@ router.get('/',
             csrfToken: req.csrfToken(),
             genders: Guest.genders,
             ages: Guest.ages,
-            expectations: Guest.expectations, 
+            expectations: Guest.expectations,
+            statesOfGuests: Guest.states,
         });
     });
 

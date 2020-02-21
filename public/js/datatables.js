@@ -117,11 +117,11 @@
                 });
             }
 
-            // data-state-column
-            if (typeof table.data('stateColumn') === 'number') {
-                var stateColumn = table.data('stateColumn');
+            // data-istate-column
+            if (typeof table.data('istateColumn') === 'number') {
+                var istateColumn = table.data('istateColumn');
                 options.columnDefs.push({
-                    "targets": stateColumn,
+                    "targets": istateColumn,
                     "render": function(data, type, row, meta) {
                         switch (data) {
                             case 'open':
@@ -129,6 +129,25 @@
                             case 'accepted':
                                 return '<i class="fas fa-check text-success"></i>';
                             case 'declined':
+                                return '<i class="fas fa-times text-danger"></i>';
+                        }
+                        return '';
+                    }
+                });
+            }
+
+            // data-gstate-column
+            if (typeof table.data('gstateColumn') === 'number') {
+                var gstateColumn = table.data('gstateColumn');
+                options.columnDefs.push({
+                    "targets": gstateColumn,
+                    "render": function(data, type, row, meta) {
+                        switch (data) {
+                            case 'invited':
+                                return '<i class="fas fa-envelope"></i>';
+                            case 'attending':
+                                return '<i class="fas fa-check text-success"></i>';
+                            case 'absent':
                                 return '<i class="fas fa-times text-danger"></i>';
                         }
                         return '';

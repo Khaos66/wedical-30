@@ -20,5 +20,8 @@
     "Tickets": "Tickets",
     "Open": "Offen",
     "Accepted": "Zugesagt",
-    "Declined": "Abgesagt"
+    "Declined": "Abgesagt",
+    "Invited": "Eingeladen",
+    "Attending": "Wird kommen",
+    "Absent": "Kommt nicht"
 }

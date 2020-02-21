@@ -14,12 +14,12 @@ block content
 
     table.data-table.table.table-responsive-md#invitesTable(data-page-length='25',
                                                         data-invitee-column='2'
-                                                        data-state-column='0'
+                                                        data-istate-column='0'
                                                         data-action-column='4'
                                                         data-delete-modal='#deleteInviteModal'
                                                         data-edit-modal='#editInviteModal'
                                                         data-edit-form='#editInviteForm'
-                                                        data-order='[[ 0, "asc" ]]',
+                                                        data-order='[[ 1, "asc" ]]',
                                                         data-ajax='/manage/invites/list',
                                                         data-columns='[{"data": "state", "className": "dt-body-center"},{"data": "title"},{"data": "guests.length"},{"data": "token"},{"data": "_id"}]')
         colgroup
