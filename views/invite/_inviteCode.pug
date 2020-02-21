@@ -1,5 +1,6 @@
-form(method='POST', action='/invite')
-    input(type='hidden', name='_csrf', value=csrfToken)
-    div
-        input.form-control(type='text', name='token', placeholder=__('Invite Code'))
-        button.btn.btn-primary(type='submit')= __('Send')
+mixin codeForm
+    form(method='POST', action='/invite')
+        input(type='hidden', name='_csrf', value=csrfToken)
+        div
+            input.form-control(type='text', name='token', placeholder=__('Invite Code'))
+            button.btn.btn-primary(type='submit')= __('Send')

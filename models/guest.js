@@ -16,6 +16,7 @@ const ModelSanitizer = require('../extension/model-sanitizer');
  * - gender
  * - age
  * - expected
+ * - attendance (unkown, absent, attending)
  */
 class Guest extends Model {
     /**
@@ -47,6 +48,7 @@ class Guest extends Model {
                 gender: '',
                 age: '',
                 expected: 'unsure',
+                attendance: 'unknown'
             },
         });
     }

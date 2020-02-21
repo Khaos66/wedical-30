@@ -1,7 +1,9 @@
+include ../invite/_inviteCode.pug
+
 div.container.bg-light.mt-2
   div.row
     div.col.text-center
       h1.h1.mt-2 PARTY PARTY PARTY
-      p= __('If you got an invite, please enter the Code below')
+      p= __('If you recieved an invite, please enter the Code below')
       div.m-4
-        include ../invite/_inviteCode.pug
+        +codeForm

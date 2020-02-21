@@ -52,11 +52,47 @@ router.get('/:token', csrfProtection, async function(req, res) {
   if (!invite) {
     return res.redirect('/invite');
   }
+  if (!['open', 'accepted', 'declined'].indexOf(invite.state) < 0) {
+    return res.redirect('/invite');
+  }
   
-  res.render('invite/invite.pug', {
+  res.render(`invite/${invite.state}.pug`, {
     bodyClass: 'invite',
     invite: invite,
   });
+});
+
+
+// Define the decline invite route.
+router.get('/:token/decline', csrfProtection, async function(req, res) {
+  if (!req.params.token) {
+    return res.redirect('/invite');
+  }
+
+  let invite = await Invite.findOne({ token: req.params.token });
+  if (!invite) {
+    return res.redirect('/invite');
+  }
+  
+  await invite.decline();
+  
+  return res.redirect(`/invite/${req.params.token}`);
+});
+
+// Define the accept invite route.
+router.get('/:token/accept', csrfProtection, async function(req, res) {
+  if (!req.params.token) {
+    return res.redirect('/invite');
+  }
+
+  let invite = await Invite.findOne({ token: req.params.token });
+  if (!invite) {
+    return res.redirect('/invite');
+  }
+  
+  await invite.accept();
+  
+  return res.redirect(`/invite/${req.params.token}`);
 });
 
 module.exports = router;

@@ -6,16 +6,18 @@ const ModelSanitizer = require('../extension/model-sanitizer');
 const customUtils = require('nedb/lib/customUtils');
 const config = require('../config');
 const QRcode = require('./qrcode');
+var Guest = require('./guest');
 
 /**
  * Model for invitations
  *
  * Properties:
  * - title
- * - type (guestlist/wildcard)
+ * - type (guestlist, wildcard)
  * - guests
  * - tickets
  * - token
+ * - state (open, declined, accepted)
  */
 class Invite extends Model {
     /**
@@ -40,12 +42,43 @@ class Invite extends Model {
         return extend(true, super.defaults(), {
             values: {
                 title: '',
+                state: 'open',
                 guests: [],
                 type: 'guestlist',
                 tickets: 0,
                 token: customUtils.uid(6)
             },
         });
+    }
+
+    /**
+     * Declines an invite for all guests
+     */
+    async decline() {
+        this.state = 'declined';
+        for(var guestId of this.guests) {
+            var guest = await Guest.findOne({_id: guestId});
+            if (guest != null) {
+                guest.attendance = 'absent';
+                await guest.save();
+            }
+        }
+        await this.save();
+    }
+
+    /**
+     * Accepts an invite for all guests
+     */
+    async accept() {
+        this.state = 'accepted';
+        for(var guestId of this.guests) {
+            var guest = await Guest.findOne({_id: guestId});
+            if (guest != null) {
+                guest.attendance = 'attending';
+                await guest.save();
+            }
+        }
+        await this.save();
     }
 
     /**
