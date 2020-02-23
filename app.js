@@ -128,6 +128,13 @@ app.use('/js/dataTables.bootstrap4.min.js',
 app.use('/js/dataTables.min.js',
     express.static(__dirname +
         '/node_modules/datatables.net/js/jquery.dataTables.min.js'));
+// toggle switches
+app.use('/js/bootstrap4-toggle.min.js',
+    express.static(__dirname +
+        '/node_modules/bootstrap4-toggle/js/bootstrap4-toggle.min.js'));
+app.use('/styles/bootstrap4-toggle.min.css',
+    express.static(__dirname +
+        '/node_modules/bootstrap4-toggle/css/bootstrap4-toggle.min.css'));
 
 // Authentication
 Auth.useAuthentication(app);
