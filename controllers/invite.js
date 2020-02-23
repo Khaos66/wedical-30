@@ -4,6 +4,7 @@ const router = express.Router();
 const csrf = require('csurf');
 const { check, validationResult } = require('express-validator');
 var Invite = require('../models/invite');
+var Guest = require('../models/guest');
 
 // CSRF
 var csrfProtection = csrf();
@@ -55,10 +56,13 @@ router.get('/:token', csrfProtection, async function(req, res) {
   if (!['open', 'accepted', 'declined'].indexOf(invite.state) < 0) {
     return res.redirect('/invite');
   }
+
+  let guests = await Guest.find({ _id: { $in: invite.guests }});
   
   res.render(`invite/${invite.state}.pug`, {
     bodyClass: 'invite',
     invite: invite,
+    guests: guests,
   });
 });
 

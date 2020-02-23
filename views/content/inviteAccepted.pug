@@ -1,5 +1,31 @@
-div.container.bg-light.mt-2
+div.container.bg-light.mt-2.p-4
   div.row
     div.col
-      h1.h1.mt-4 Hi #{invite.title}
-      p You're in!
+      div.alert.alert-success.my-2
+        h4.alert-heading= __('You\'re in, {{title}}!', { title: invite.title })
+        p= __('Please take 5 more minutes to help us organize this event.')
+        p= __('Just fill out the form below and we\'re happy =)')
+div.container.bg-light.mt-4.p-4
+  div.row
+    div.col
+      h2
+        i.fas.fa-users
+        |
+        |
+        = __('Who\'s coming?')
+  each guest, index in guests
+    if index > 0
+       div.row
+        div.col
+          hr.m-1
+    div.row.my-1
+      div.col-4.d-flex
+        span.mx-2.h5.my-0.align-self-center= guest.name
+      div.col
+        input(type='checkbox' checked=(guest.state === 'attending') data-toggle='toggle' data-on=__('Coming') data-off=__('Not coming') data-onstyle='success' data-offstyle='danger')
+      div.col.d-flex
+        div.my-0.align-self-center
+          = __('No allergies or special diet')
+        
+      
+
