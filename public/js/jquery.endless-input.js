@@ -39,6 +39,7 @@
 
             // add first input group
             addFields();
+            this.addFields = addFields;
 
             // Add function to reset the input group
             container.addClass('endlessInputEnabled');
@@ -51,7 +52,11 @@
     };
 
     $.fn.resetEndlessForm = function() {
-        return this.filter('.endlessInputEnabled').each(function() {
+        var endlessContainer = this.find('.endlessInput');
+        if (endlessContainer.length == 0) {
+            endlessContainer = this;
+        }
+        return endlessContainer.filter('.endlessInputEnabled').each(function() {
             this.resetEndlessInputs();
         });
     };

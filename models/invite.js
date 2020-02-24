@@ -56,10 +56,10 @@ class Invite extends Model {
      */
     async decline() {
         this.state = 'declined';
-        for(var guestId of this.guests) {
-            var guest = await Guest.findOne({_id: guestId});
+        for (var guestId of this.guests) {
+            var guest = await Guest.findOne({ _id: guestId });
             if (guest != null) {
-                guest.status = 'absent';
+                guest.state = 'absent';
                 await guest.save();
             }
         }
@@ -71,10 +71,10 @@ class Invite extends Model {
      */
     async accept() {
         this.state = 'accepted';
-        for(var guestId of this.guests) {
-            var guest = await Guest.findOne({_id: guestId});
+        for (var guestId of this.guests) {
+            var guest = await Guest.findOne({ _id: guestId });
             if (guest != null) {
-                guest.status = 'attending';
+                guest.state = 'attending';
                 await guest.save();
             }
         }
@@ -130,10 +130,10 @@ Invite.use(Timestamps);
 Invite.use(ModelSanitizer);
 
 // all possible invite types
-Invite.types = { 'guestlist': 'Guest with an invite', 'wildcard': 'Tickets'};
+Invite.types = { 'guestlist': 'Guest with an invite', 'wildcard': 'Tickets' };
 
 // all possible invite states
-Invite.states = { 'open': 'Open', 'accepted': 'Accepted', 'declined': 'Declined'};
+Invite.states = { 'open': 'Open', 'accepted': 'Accepted', 'declined': 'Declined' };
 
 
 module.exports = Invite;

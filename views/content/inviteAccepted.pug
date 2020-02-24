@@ -1,3 +1,6 @@
+
+include ../includes/_modals.pug
+
 div.container.bg-light.mt-2.p-4
   div.row
     div.col
@@ -22,10 +25,57 @@ div.container.bg-light.mt-4.p-4
       div.col-4.d-flex
         span.mx-2.h5.my-0.align-self-center= guest.name
       div.col
-        input(type='checkbox' checked=(guest.state === 'attending') data-toggle='toggle' data-on=__('Coming') data-off=__('Not coming') data-onstyle='success' data-offstyle='danger')
-      div.col.d-flex
-        div.my-0.align-self-center
-          = __('No allergies or special diet')
-        
-      
+        input(type='checkbox'
+              checked=(guest.state === 'attending')
+              data-change-api=`/invite/${invite.token}/gstate/${guest._id}`
+              data-toggle='toggle'
+              data-on=__('Coming')
+              data-off=__('Not coming')
+              data-onstyle='success'
+              data-offstyle='danger')
+      div.col
+        div.my-0.d-flex
+          a.btn-sm.btn-secondary.align-self-start(href='#', data-toggle='modal', data-target='#setDietModal', data-id=guest._id)
+            i.fas.fa-pen
+          div.ml-1.align-self-center.h5
+            if (!guest.allergy || guest.allergy.length === 0) && (!guest.diet || guest.diet.length === 0)
+              span= __('No allergies or special diet')
+            else
+              for allergy in guest.allergy
+                span.mx-1.badge.badge-pill.badge-danger
+                  i.fas.fa-allergies
+                  |
+                  |
+                  = allergy
+              for diet in guest.diet
+                span.mx-1.badge.badge-pill.badge-warning
+                  i.fas.fa-utensils
+                  |
+                  |
+                  = diet
 
++modal('setDietModal',
+            __('Allergies & Diet'),
+            __('Save'),
+            __('Abort'),
+            'dietForm',
+            __('Error while transmitting data'))(class='clear-form populate-form')
+        form.ajaxForm.needs-validation.page-refresh#dietForm(data-modal='#setDietModal',
+                                    data-error='#setDietModalError',
+                                    data-fill-method='GET'
+                                    method='PUT',
+                                    action=`/invite/${invite.token}/gdiet/{id}`)
+          div.endlessInput(data-input-template='#allergieTemplate')
+            div.form-group.row.collapse#allergieTemplate
+              label.col-sm-2.col-form-label
+                span.h4
+                  i.fas.fa-allergies.fa-pull-right
+              div.col-sm-10
+                input.form-control(type='text', name='allergy%s', placeholder=__('%s. Allergy'))
+          div.endlessInput(data-input-template='#dietTemplate')
+            div.form-group.row.collapse#dietTemplate
+              label.col-sm-2.col-form-label
+                span.h4
+                  i.fas.fa-utensils.fa-pull-right
+              div.col-sm-10
+                input.form-control(type='text', name='diet%s', placeholder=__('%s. Diet'))

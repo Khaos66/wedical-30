@@ -1,4 +1,29 @@
 (function($) {
+
+    /**
+     * @summary
+     * Send changes on a cntrol as POST message
+     */
+    $.fn.postChange = function() {
+        return this.each(function() {
+            $(this).on('change', function() {
+                var control = $(this);
+                var val = control.prop('checked');
+                if (val == undefined) {
+                    val = control.val();
+                }
+                $.ajax({
+                    url: control.data('changeApi'),
+                    data: { value: val },
+                    method: 'POST',
+                    timeout: 2000,
+                    headers: { "CSRF-Token": getCSRF() },
+                    complete: handleCSRF
+                })
+            });
+        });
+    };
+
     /**
      * @summary
      * Clears the fields of a form
@@ -62,7 +87,7 @@
                     error: function() { showElement(btn.data('error')); },
                     success: function() { handleModalSuccess(btn); },
                     complete: handleCSRF
-                })
+                });
             });
         });
     };
@@ -139,6 +164,25 @@
                                 if (key === 'auth' || key === 'roles') {
                                     continue;
                                 }
+                                if (Array.isArray(value)) {
+                                    var container = form.find(`[name='${key}1']`).closest('.endlessInputEnabled');
+                                    if (container.length < 1) {
+                                        continue;
+                                    }
+                                    for (let index = 0; index < value.length; index++) {
+                                        var input = container.find(`[name='${key}${index+1}']`);
+                                        if (input.length === 0) {
+                                            container[0].addFields();
+                                            input = container.find(`[name='${key}${index+1}']`);
+                                        }
+                                        input.val(value[index]);
+                                    }
+                                    if (value.length > 0) {
+                                        container[0].addFields();
+                                    }
+                                    continue;
+                                }
+
                                 var inputs = form.find(`[name=${key}]`);
                                 // text
                                 inputs.not('[type="radio"]').not('select').each(function() {
