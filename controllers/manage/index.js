@@ -21,8 +21,8 @@ router.get('/',
         let ages = dataExt.countBy(allGuests, (g) => g.age, Object.keys(Guest.ages));
         let expectations = dataExt.countBy(allGuests, (g) => g.expected, Object.keys(Guest.expectations));
         let guestStates = dataExt.countBy(allGuests, (g) => g.state, ['invited', 'attending', 'absent']);
-        let guestAllergies = dataExt.countBy(allGuests, (g) => g.allergy || []);
-        let guestDiets = dataExt.countBy(allGuests, (g) => g.diet || []);
+        let guestAllergies = dataExt.countBy(allGuests, (g) => g.allergy || [], undefined, (g) => g.state === 'attending' ? 1 : 0);
+        let guestDiets = dataExt.countBy(allGuests, (g) => g.diet || [], undefined, (g) => g.state === 'attending' ? 1 : 0);
 
         let allInvites = await Invite.find();
         let invites = dataExt.countBy(allInvites, (g) => g.type, ['guestlist', 'wildcard'], (g) => g.type === 'guestlist' ? g.guests.length : g.tickets);

@@ -31,6 +31,9 @@ module.exports = (function() {
             }
 
             let increment = valueSelector(entry);
+            if (increment === 0) {
+                continue;
+            }
 
             if (Array.isArray(value)) {
                 for (let val of value) {

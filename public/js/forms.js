@@ -2,6 +2,30 @@
 
     /**
      * @summary
+     * Control is only visible when the assigned control is checked or has a value
+     */
+    $.fn.visibleWhen = function() {
+        return this.each(function() {
+            var control = $(this);
+            var trigger = $(control.data('visibleWhen'));
+            var handler = function() {
+                var val = trigger.prop('checked');
+                if (val == undefined) {
+                    val = trigger.val();
+                }
+                if (val && val !== 'false') {
+                    control.show();
+                } else {
+                    control.hide();
+                }
+            };
+            trigger.on('change', handler);
+            handler();
+        });
+    };
+
+    /**
+     * @summary
      * Send changes on a cntrol as POST message
      */
     $.fn.postChange = function() {

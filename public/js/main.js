@@ -42,6 +42,9 @@
     // Send changes via POST
     $('[data-change-api]').postChange();
 
+    // Show and hide content based on checkboxes
+    $('[data-visible-when]').visibleWhen();
+
     // Radio toggles
     $('input[data-toggle="radio"][data-target]').each(function() {
         var input = $(this);

@@ -8,6 +8,7 @@ div.container.bg-light.mt-2.p-4
         h4.alert-heading= __('You\'re in, {{title}}!', { title: invite.title })
         p= __('Please take 5 more minutes to help us organize this event.')
         p= __('Just fill out the form below and we\'re happy =)')
+
 div.container.bg-light.mt-4.p-4
   div.row
     div.col
@@ -26,6 +27,7 @@ div.container.bg-light.mt-4.p-4
         span.mx-2.h5.my-0.align-self-center= guest.name
       div.col
         input(type='checkbox'
+              id=`comming_${guest._id}`
               checked=(guest.state === 'attending')
               data-change-api=`/invite/${invite.token}/gstate/${guest._id}`
               data-toggle='toggle'
@@ -33,7 +35,7 @@ div.container.bg-light.mt-4.p-4
               data-off=__('Not coming')
               data-onstyle='success'
               data-offstyle='danger')
-      div.col
+      div.col(data-visible-when=`#comming_${guest._id}`)
         div.my-0.d-flex
           a.btn-sm.btn-secondary.align-self-start(href='#', data-toggle='modal', data-target='#setDietModal', data-id=guest._id)
             i.fas.fa-pen
@@ -53,6 +55,24 @@ div.container.bg-light.mt-4.p-4
                   |
                   |
                   = diet
+
+div.container.bg-light.mt-4.p-4
+  div.row
+    div.col
+      h2
+        i.fas.fa-share-alt
+        |
+        |
+        = __('Share the invite')
+
+div.container.bg-light.mt-4.p-4
+  div.row
+    div.col
+      h2
+        i.fas.fa-user-circle
+        |
+        |
+        = __('Stay informed')
 
 +modal('setDietModal',
             __('Allergies & Diet'),
