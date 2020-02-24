@@ -16,15 +16,33 @@ block content
       div.col-4.col-md-2
         strong= __('Guests')
       div.col-8.col-md-10
-        each count, state in guestStates
-            if count > 0
-              span.badge.badge-pill.badge-dark.mx-1(data-toggle='tooltip', title=__(statesOfGuests[state]))
-                +guestStateIcon(state)
-                |
-                |
-                = count
-        span= '|'
         if guestCount > 0
+          each count, state in guestStates
+              if count > 0
+                span.badge.badge-pill.badge-dark.mx-1(data-toggle='tooltip', title=__(statesOfGuests[state]))
+                  +guestStateIcon(state)
+                  |
+                  |
+                  = count
+          if Object.entries(guestAllergies).length !== 0
+            span= '|'
+            each count, allergy in guestAllergies
+              if count > 0
+                span.badge.badge-pill.badge-danger.mx-1(data-toggle='tooltip', title=allergy)
+                  i.fas.fa-allergies
+                  |
+                  |
+                  = count
+          if Object.entries(guestDiets).length !== 0
+            span= '|'
+            each count, diet in guestDiets
+              if count > 0
+                span.badge.badge-pill.badge-warning.mx-1(data-toggle='tooltip', title=diet)
+                  i.fas.fa-utensils
+                  |
+                  |
+                  = count
+          span= '|'
           each count, gender in guestGenders
             if count > 0
               span.badge.badge-pill.badge-secondary.mx-1(data-toggle='tooltip', title=__(genders[gender]))
@@ -52,21 +70,22 @@ block content
       div.col-4.col-md-2
         strong= __('Invites')
       div.col-8.col-md-10
-        each count, state in inviteStates
+        if inviteCount > 0
+          each count, state in inviteStates
+              if count > 0
+                span.badge.badge-pill.badge-dark.mx-1(data-toggle='tooltip', title=__(statesOfInvites[state]))
+                  +inviteStateIcon(state)
+                  |
+                  |
+                  = count
+          span= '|'
+          each count, itype in invites
             if count > 0
-              span.badge.badge-pill.badge-dark.mx-1(data-toggle='tooltip', title=__(statesOfInvites[state]))
-                +inviteStateIcon(state)
+              span.badge.badge-pill.badge-secondary.mx-1(data-toggle='tooltip', title=__(typesOfInvites[itype]))
+                +inviteTypeIcon(itype)
                 |
                 |
                 = count
-        span= '|'
-        each count, itype in invites
-          if count > 0
-            span.badge.badge-pill.badge-secondary.mx-1(data-toggle='tooltip', title=__(typesOfInvites[itype]))
-              +inviteTypeIcon(itype)
-              |
-              |
-              = count
 
   hr
 

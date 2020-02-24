@@ -31,10 +31,21 @@ module.exports = (function() {
             }
 
             let increment = valueSelector(entry);
-            if (sums[value]) {
-                sums[value] += increment;
+
+            if (Array.isArray(value)) {
+                for (let val of value) {
+                    if (sums[val]) {
+                        sums[val] += increment;
+                    } else {
+                        sums[val] = increment;
+                    }
+                }
             } else {
-                sums[value] = increment;
+                if (sums[value]) {
+                    sums[value] += increment;
+                } else {
+                    sums[value] = increment;
+                }
             }
         }
         return sums;
