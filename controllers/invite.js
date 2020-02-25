@@ -63,7 +63,7 @@ router.get('/:token', csrfProtection, async function(req, res) {
         bodyClass: 'invite',
         csrfToken: req.csrfToken(),
         invite: invite,
-        guests: guests,
+        guests: guests.map(guest => invite.addInviteLink(guest)),
     });
 });
 
@@ -196,6 +196,32 @@ router.put('/:token/gdiet/:uid', csrfProtection, async function(req, res) {
     await guest.save();
 
     return res.status(200).end('ok');
+});
+
+// Define the get guest invite link route.
+router.get('/:token/ginvite/:uid', csrfProtection, async function(req, res) {
+    if (!req.params.token || !req.params.uid) {
+        return res.status(404).end();
+    }
+
+    let invite = await Invite.findOne({ token: req.params.token });
+    if (!invite) {
+        return res.status(404).end();
+    }
+
+    if (invite.guests.indexOf(req.params.uid) < 0) {
+        return res.status(404).end();
+    }
+
+    var guest = await Guest.findOne({ _id: req.params.uid });
+    if (!guest) {
+        return res.status(404).end();
+    }
+
+    invite.addInviteLink(guest);
+
+    res.setHeader('Content-Type', 'application/json');
+    return res.end(JSON.stringify({ data: { inviteLink: guest.inviteLink } }));
 });
 
 module.exports = router;

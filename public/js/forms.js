@@ -2,6 +2,32 @@
 
     /**
      * @summary
+     * Copies the value of a target input field into the clipboard
+     */
+    $.fn.copyToClipboard = function() {
+        return this.each(function() {
+            $(this).on('click', function(e) {
+                var btn = $(this);
+                if (btn.data('copyTarget')) {
+                    var target = $(btn.data('copyTarget'));
+                    if (target.length > 0) {
+                        target = target[0];
+                        // Select the text field
+                        target.select();
+                        // For mobile devices
+                        target.setSelectionRange(0, 99999);
+                        // Copy the text inside the text field
+                        document.execCommand("copy");
+                    }
+                }
+                e.preventDefault();
+                return false;
+            });
+        });
+    };
+
+    /**
+     * @summary
      * Control is only visible when the assigned control is checked or has a value
      */
     $.fn.visibleWhen = function() {

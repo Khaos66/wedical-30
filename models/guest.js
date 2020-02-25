@@ -19,6 +19,7 @@ const ModelSanitizer = require('../extension/model-sanitizer');
  * - state
  * - allergy
  * - diet
+ * - token
  */
 class Guest extends Model {
     /**
@@ -53,6 +54,7 @@ class Guest extends Model {
                 state: '',
                 allergy: [],
                 diet: [],
+                token: '',
             },
         });
     }

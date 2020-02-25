@@ -56,8 +56,8 @@ class Invite extends Model {
      */
     async decline() {
         this.state = 'declined';
-        for (var guestId of this.guests) {
-            var guest = await Guest.findOne({ _id: guestId });
+        for (let guestId of this.guests) {
+            let guest = await Guest.findOne({ _id: guestId });
             if (guest != null) {
                 guest.state = 'absent';
                 await guest.save();
@@ -71,9 +71,18 @@ class Invite extends Model {
      */
     async accept() {
         this.state = 'accepted';
-        for (var guestId of this.guests) {
-            var guest = await Guest.findOne({ _id: guestId });
+        let tokens = [];
+        for (let guestId of this.guests) {
+            let guest = await Guest.findOne({ _id: guestId });
             if (guest != null) {
+                // create guest invite token
+                let token = customUtils.uid(6);
+                while (tokens.indexOf(token) >= 0) {
+                    token = customUtils.uid(6);
+                }
+                tokens.push(token);
+                guest.token = token;
+                // set state
                 guest.state = 'attending';
                 await guest.save();
             }
@@ -94,6 +103,15 @@ class Invite extends Model {
         } else if (!Array.isArray(this.guests)) {
             this.guests = [this.guests];
         }
+    }
+
+    /**
+     * Adds the inviteLink field to a guest
+     * @param {Guest} guest
+     */
+    addInviteLink(guest) {
+        guest.inviteLink = this.getInviteUrl() + '/register/' + guest.token;
+        return guest;
     }
 
     /**

@@ -45,6 +45,9 @@
     // Show and hide content based on checkboxes
     $('[data-visible-when]').visibleWhen();
 
+    // Copy to clipboard buttons
+    $('[data-copy-target]').copyToClipboard();
+
     // Radio toggles
     $('input[data-toggle="radio"][data-target]').each(function() {
         var input = $(this);
