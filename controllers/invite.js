@@ -5,6 +5,7 @@ const csrf = require('csurf');
 const { check, validationResult } = require('express-validator');
 var Invite = require('../models/invite');
 var Guest = require('../models/guest');
+const sendmail = require('../mailer');
 
 // CSRF
 var csrfProtection = csrf();
@@ -223,5 +224,36 @@ router.get('/:token/ginvite/:uid', csrfProtection, async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     return res.end(JSON.stringify({ data: { inviteLink: guest.inviteLink } }));
 });
+
+// Define the get guest invite link route.
+router.post('/:token/ginvite/:uid', csrfProtection, async function(req, res) {
+    if (!req.params.token || !req.params.uid || !req.body.mail) {
+        return res.status(404).end();
+    }
+
+    let invite = await Invite.findOne({ token: req.params.token });
+    if (!invite) {
+        return res.status(404).end();
+    }
+
+    if (invite.guests.indexOf(req.params.uid) < 0) {
+        return res.status(404).end();
+    }
+
+    var guest = await Guest.findOne({ _id: req.params.uid });
+    if (!guest) {
+        return res.status(404).end();
+    }
+
+    guest.email = req.body.mail;
+    await guest.save();
+
+    invite.addInviteLink(guest);
+
+    sendmail(req, req.body.mail, 'guest_invite', { guest: guest });
+
+    return res.end();
+});
+
 
 module.exports = router;
