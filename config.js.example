@@ -14,6 +14,17 @@ const config = {
   },
   // locales you want to support (icon collection: https://www.iconfinder.com/iconsets/195-flat-flag-psd-icons)
   locales: ['en', 'de'],
+  // SMTP configuration (see: https://nodemailer.com/smtp/)
+  smtp: {
+    host: 'localhost',
+    port: 465,
+    secure: true,
+    auth: {
+      user: "username",
+      pass: "password"
+    }
+  },
+  mailFrom: 'sender@yourserver.com',
 };
 
 module.exports = config;
