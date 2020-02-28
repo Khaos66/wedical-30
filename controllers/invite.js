@@ -23,6 +23,24 @@ async function checkTokenExists(value, { req }) {
     }
 }
 
+async function findInviteGuest(req) {
+    if (!req.params.token || !req.params.uid) {
+        return null;
+    }
+
+    let invite = await Invite.findOne({ token: req.params.token });
+    if (!invite || invite.guests.indexOf(req.params.uid) < 0) {
+        return null;
+    }
+
+    var guest = await Guest.findOne({ _id: req.params.uid });
+    if (!guest) {
+        return null;
+    }
+
+    return {invite: invite, guest: guest};
+}
+
 // Define the invite code page route.
 router.get('/', csrfProtection, function(req, res) {
     res.render('invite/code.pug', {
@@ -103,56 +121,30 @@ router.get('/:token/accept', csrfProtection, async function(req, res) {
 
 // Define the change guest state route.
 router.post('/:token/gstate/:uid', csrfProtection, async function(req, res) {
-    if (!req.params.token || !req.params.uid || req.body.value === undefined) {
-        return res.status(404).end();
-    }
-
-    let invite = await Invite.findOne({ token: req.params.token });
-    if (!invite) {
-        return res.status(404).end();
-    }
-
-    if (invite.guests.indexOf(req.params.uid) < 0) {
-        return res.status(404).end();
-    }
-
-    var guest = await Guest.findOne({ _id: req.params.uid });
-    if (!guest) {
-        return res.status(404).end();
+    let result = await findInviteGuest(req);
+    if (!result || req.body.value === undefined) {
+        return result.status(404).end();
     }
 
     if (req.body.value === 'true') {
-        guest.state = 'attending';
+        result.guest.state = 'attending';
     } else {
-        guest.state = 'absent';
+        result.guest.state = 'absent';
     }
 
-    await guest.save();
+    await result.guest.save();
 
     return res.status(200).end('ok');
 });
 
 // Define the get guest diet/allergies route.
 router.get('/:token/gdiet/:uid', csrfProtection, async function(req, res) {
-    if (!req.params.token || !req.params.uid) {
-        return res.status(404).end();
+    let result = await findInviteGuest(req);
+    if (!result) {
+        return result.status(404).end();
     }
 
-    let invite = await Invite.findOne({ token: req.params.token });
-    if (!invite) {
-        return res.status(404).end();
-    }
-
-    if (invite.guests.indexOf(req.params.uid) < 0) {
-        return res.status(404).end();
-    }
-
-    var guest = await Guest.findOne({ _id: req.params.uid });
-    if (!guest) {
-        return res.status(404).end();
-    }
-
-    var pojo = guest.toPOJO();
+    var pojo = result.guest.toPOJO();
     pojo.allergy = pojo.allergy || [];
     pojo.diet = pojo.diet || [];
 
@@ -162,95 +154,56 @@ router.get('/:token/gdiet/:uid', csrfProtection, async function(req, res) {
 
 // Define the put guest diet/allergies route.
 router.put('/:token/gdiet/:uid', csrfProtection, async function(req, res) {
-    if (!req.params.token || !req.params.uid || req.body.allergy1 === undefined || req.body.diet1 === undefined) {
-        return res.status(404).end();
+    let result = await findInviteGuest(req);
+    if (!result || req.body.allergy1 === undefined || req.body.diet1 === undefined) {
+        return result.status(404).end();
     }
 
-    let invite = await Invite.findOne({ token: req.params.token });
-    if (!invite) {
-        return res.status(404).end();
-    }
-
-    if (invite.guests.indexOf(req.params.uid) < 0) {
-        return res.status(404).end();
-    }
-
-    var guest = await Guest.findOne({ _id: req.params.uid });
-    if (!guest) {
-        return res.status(404).end();
-    }
-
-    guest.allergy = [];
-    guest.diet = [];
+    result.guest.allergy = [];
+    result.guest.diet = [];
 
     for (var field in req.body) {
         if (typeof(req.body[field]) !== 'string' || !req.body[field]) {
             continue;
         }
         if (field.startsWith('allergy')) {
-            guest.allergy.push(req.body[field]);
+            result.guest.allergy.push(req.body[field]);
         } else if (field.startsWith('diet')) {
-            guest.diet.push(req.body[field]);
+            result.guest.diet.push(req.body[field]);
         }
     }
 
-    await guest.save();
+    await result.guest.save();
 
     return res.status(200).end('ok');
 });
 
 // Define the get guest invite link route.
 router.get('/:token/ginvite/:uid', csrfProtection, async function(req, res) {
-    if (!req.params.token || !req.params.uid) {
-        return res.status(404).end();
+    let result = await findInviteGuest(req);
+    if (!result) {
+        return result.status(404).end();
     }
 
-    let invite = await Invite.findOne({ token: req.params.token });
-    if (!invite) {
-        return res.status(404).end();
-    }
-
-    if (invite.guests.indexOf(req.params.uid) < 0) {
-        return res.status(404).end();
-    }
-
-    var guest = await Guest.findOne({ _id: req.params.uid });
-    if (!guest) {
-        return res.status(404).end();
-    }
-
-    invite.addInviteLink(guest);
+    result.invite.addInviteLink(result.guest);
 
     res.setHeader('Content-Type', 'application/json');
-    return res.end(JSON.stringify({ data: { inviteLink: guest.inviteLink } }));
+    return res.end(JSON.stringify({ data: { inviteLink: result.guest.inviteLink } }));
 });
 
 // Define the get guest invite link route.
 router.post('/:token/ginvite/:uid', csrfProtection, async function(req, res) {
-    if (!req.params.token || !req.params.uid || !req.body.mail) {
-        return res.status(404).end();
+    let result = await findInviteGuest(req);
+    if (!result || !req.body.mail) {
+        return result.status(404).end();
     }
 
-    let invite = await Invite.findOne({ token: req.params.token });
-    if (!invite) {
-        return res.status(404).end();
-    }
+    result.guest.email = req.body.mail;
+    await result.guest.save();
 
-    if (invite.guests.indexOf(req.params.uid) < 0) {
-        return res.status(404).end();
-    }
+    result.invite.addInviteLink(result.guest);
 
-    var guest = await Guest.findOne({ _id: req.params.uid });
-    if (!guest) {
-        return res.status(404).end();
-    }
-
-    guest.email = req.body.mail;
-    await guest.save();
-
-    invite.addInviteLink(guest);
-
-    sendmail(req, req.body.mail, 'guest_invite', { guest: guest });
+    sendmail(req, req.body.mail, 'guest_invite', { guest: result.guest });
 
     return res.end();
 });
