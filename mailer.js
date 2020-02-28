@@ -1,6 +1,8 @@
+const debug = require('debug')('wedical:mailer');
 const nodemailer = require('nodemailer');
 const pug = require('pug');
 const fs = require('fs');
+const path = require('path');
 const i18n = require('i18n');
 const i18nExt = require('./extension/i18n-ext');
 const config = require('./config');
@@ -11,7 +13,7 @@ const sendmail = function(req, to, template, data) {
 
     // load tempalted mail
     let pugFn = pug.compileFile(`./mails/${template}/template.pug`, {
-        cache: true
+        cache: false
     });
 
     // enable locales
@@ -48,8 +50,23 @@ const sendmail = function(req, to, template, data) {
         subject: title,
         html: htmlMessage,
     };
-    transporter.sendMail(message, function(err, info, response) {
 
+    // add attachements
+    let attachDir = `./mails/${template}/attach`;
+    if (fs.existsSync(attachDir)) {
+        let files = fs.readdirSync(attachDir);
+        message.attachments = files.map(x => { return { 
+            filename: x, 
+            cid: x,
+            path: path.join(attachDir, x)}; });
+    }
+
+    transporter.sendMail(message, function(err, info, response) {
+        if (err) {
+            debug.log(`Error while sending email: ${err}`);
+        }else if (info) {
+            debug.log(`Successfully sended email`);
+        }
     });
 }
 

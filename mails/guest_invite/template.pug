@@ -1,5 +1,22 @@
-html
+doctype transitional
+html(xmlns='http://www.w3.org/1999/xhtml')
     head
-        title Testmail
-    body
-        p= __('dummy')
+        meta(http-equiv='Content-Type' content='text/html; charset=UTF-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+        title= __('You\'re invited!')
+    body(style='margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif')
+        table(align='center' cellpadding='0' cellspacing='0' width='600')
+            tr
+                td
+                    img(src='cid:party.jpg' height='100' width='150')
+            tr
+                td(style='padding-top: 40px; padding-bottom: 30px')
+                    h1= __('Hi {{name}}', { name: guest.name })
+                    p= __('You\'re invited to the party!')
+                    p= __('For more information follow the link below')
+                    p
+                        a(href=guest.inviteLink)= guest.inviteLink
+            tr
+                td
+                    p Powered by 
+                        a(href='https://github.com/KhaosCoders/wedical') Wedical
