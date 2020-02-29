@@ -3,7 +3,7 @@ const config = {
   // app secret (DO CHANGE THIS!)
   secret: 'UseASecureAndLongString',
   // base URL used in links in emails
-  baseUrl: 'http://localhost:3000/',
+  baseUrl: 'http://localhost:8080/',
   // Title shown in Browser
   title: 'Wedical',
   admin: {

@@ -49,6 +49,31 @@ router.get('/', csrfProtection, function(req, res) {
     });
 });
 
+
+// Define the invite register page route.
+router.get('/:token/register/:utoken', csrfProtection, async function(req, res) {
+    if (!req.params.token || !req.params.utoken) {
+        return result.status(404).end();
+    }
+
+    let invite = await Invite.findOne({ token: req.params.token });
+    if (!invite) {
+        return result.status(404).end();
+    }
+
+    var guest = await Guest.findOne({ token: req.params.utoken });
+    if (!guest || invite.guests.indexOf(guest._id) < 0) {
+        return result.status(404).end();
+    }
+    
+    res.render('invite/register.pug', {
+        csrfToken: req.csrfToken(),
+        guest: guest,
+        bodyClass: 'invite invite-code',
+    });
+});
+
+
 // Define the invite code form route.
 router.post('/',
     csrfProtection,
