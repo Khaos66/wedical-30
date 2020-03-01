@@ -10,6 +10,7 @@ router.use('/manage', require('./manage'));
 // load login/logout route
 router.use('/login', require('./login'));
 router.use('/logout', require('./logout'));
+router.use('/auth', require('./auth'));
 
 // Define the home page route.
 router.get('/', function(req, res) {

@@ -3,11 +3,12 @@ const session = require('express-session');
 const NedbStore = require('nedb-session-store')(session);
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const i18n = require('i18n');
-const hash = require('object-hash');
 const Authorization = require('node-authorization').Authorization;
 const compileProfile = require('node-authorization').profileCompiler;
 const config = require('./config');
+const { Strategies } = require('./auth-utils');
 var User = require('./models/user');
 var Role = require('./models/role');
 
@@ -144,7 +145,7 @@ class Auth {
             function(username, password, done) {
                 username = username.toLowerCase();
                 debug(`Local user: ${username} pw(len):${password.length}`);
-                User.findOne({ email: username }).then(async function(user, err) {
+                User.findOne({ email: username, strategy: Strategies.LOCAL }).then(async function(user, err) {
                     if (err) {
                         debug(`Error: ${JSON.stringify(err)}`);
                         return done(err);
@@ -165,6 +166,30 @@ class Auth {
                     done(null, user);
                 });
             }));
+
+        // google authentication
+        if (config.authProviders.google.clientID) {
+            passport.use(new GoogleStrategy({
+                    clientID: config.authProviders.google.clientID,
+                    clientSecret: config.authProviders.google.clientSecret,
+                    callbackURL: `${config.baseUrl}auth/google/callback`
+                },
+                async function(accessToken, refreshToken, profile, done) {
+                    let user = await User.findOne({ googleId: profile.id });
+                    if (!user) {
+                        user = await User.create({
+                            googleId: profile.id,
+                            strategy: Strategies.GOOGLE,
+                            name: profile.displayName,
+                            email: profile.emails[0].value,
+                            picture: profile.photos.length > 0 ? profile.photos[0].value : '',
+                            roles: [await Role.findOne({ name: 'Guest' })]
+                        });
+                    }
+                    done(undefined, user);
+                }
+            ));
+        }
 
         // user session serialization
         passport.serializeUser(function(user, done) {

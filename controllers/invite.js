@@ -5,6 +5,8 @@ const csrf = require('csurf');
 const { check, validationResult } = require('express-validator');
 var Invite = require('../models/invite');
 var Guest = require('../models/guest');
+var User = require('../models/user');
+var Role = require('../models/role');
 const sendmail = require('../mailer');
 
 // CSRF
@@ -38,7 +40,7 @@ async function findInviteGuest(req) {
         return null;
     }
 
-    return {invite: invite, guest: guest};
+    return { invite: invite, guest: guest };
 }
 
 // Define the invite code page route.
@@ -65,13 +67,57 @@ router.get('/:token/register/:utoken', csrfProtection, async function(req, res) 
     if (!guest || invite.guests.indexOf(guest._id) < 0) {
         return result.status(404).end();
     }
-    
+
+    req.session.guestid = guest._id;
+
     res.render('invite/register.pug', {
         csrfToken: req.csrfToken(),
         guest: guest,
         bodyClass: 'invite invite-code',
     });
 });
+
+
+// Define the invite register page route.
+router.post('/:token/register/:utoken',
+    csrfProtection,
+    check('password').notEmpty(),
+    check('password2').custom((value, { req }) => value === req.body.password).withMessage('Passwords don\'t match'),
+    check('email').isEmail(),
+    async function(req, res) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
+
+        if (!req.params.token || !req.params.utoken) {
+            return result.status(404).end();
+        }
+
+        let invite = await Invite.findOne({ token: req.params.token });
+        if (!invite) {
+            return result.status(404).end();
+        }
+
+        var guest = await Guest.findOne({ token: req.params.utoken });
+        if (!guest || invite.guests.indexOf(guest._id) < 0) {
+            return result.status(404).end();
+        }
+
+        // Create new user
+        let user = await User.create({
+            guestId: guest._id,
+            name: guest.name,
+            email: req.body[`email`],
+            roles: [await Role.findOne({ name: 'Guest' })]
+        });
+
+        // set password
+        user.setLocalPw(req.body[`password`]);
+        await user.save();
+
+        res.redirect('/profile');
+    });
 
 
 // Define the invite code form route.

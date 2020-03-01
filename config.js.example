@@ -3,7 +3,7 @@ const config = {
   // app secret (DO CHANGE THIS!)
   secret: 'UseASecureAndLongString',
   // base URL used in links in emails
-  baseUrl: 'http://localhost:8080/',
+  baseUrl: 'http://lvh.me:8080/',
   // Title shown in Browser
   title: 'Wedical',
   admin: {
@@ -25,6 +25,14 @@ const config = {
     }
   },
   mailFrom: 'sender@yourserver.com',
+  // Alternative authentication providers
+  authProviders: {
+    // Google OAuth2
+    google: {
+      clientID: '',
+      clientSecret: ''
+    }
+  }
 };
 
 module.exports = config;

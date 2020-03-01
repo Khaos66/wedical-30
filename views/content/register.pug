@@ -18,14 +18,15 @@ div.container.bg-light.mt-2
         div.col.text-center.mt-4
             h2.text-uppercase= __('Register now')
     div.row
-        div.col.text-center
-            p Google
+        div.col.col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4.mb-4
+            a.btn.btn-outline-dark.w-100(href='/auth/google')
+                span.gicon
+                span= __('Continue with Google')
     div.row
-        div.col.text-center
-            p FB
-    div.row
-        div.col.text-center
-            p ...
+        div.col.col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4.mb-4
+            a.btn.btn-outline-dark.w-100(href='/auth/facebok')
+                span.fbicon
+                span= __('Continue with Facebook')
     div.row.d-flex.my-3
         div.col-2.col-sm-3.offset-2.align-self-center.w-100
             div.border-top.border-dark
@@ -36,11 +37,12 @@ div.container.bg-light.mt-2
     div.row
         div.col.col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4.mb-4
             form(method='post')
+                input(type='hidden', name='_csrf' value=csrfToken)
                 div.row.input-group.mx-0.my-1
                     div.input-group-prepend
                         div.input-group-text
                             i.fas.fa-at
-                    input.form-control(type='email', name='mail', placeholder=__('Email address'), value= guest.email)
+                    input.form-control(type='email', name='email', placeholder=__('Email address'), value= guest.email)
                 div.row.input-group.mx-0.my-1
                     div.input-group-prepend
                         div.input-group-text
@@ -53,5 +55,3 @@ div.container.bg-light.mt-2
                     input.form-control(type='password', name='password2', placeholder=__('Reenter Password'))
                 div.row.my-1.mx-1
                     button.btn.btn-primary.w-100(type='submit')= __('Sign up')
-
-
