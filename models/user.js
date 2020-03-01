@@ -20,6 +20,7 @@ const ModelSanitizer = require('../extension/model-sanitizer');
  * - picture
  *
  * - googleId (OAuth2 Google profile ID)
+ * - facebookId (OAuth Facebook profile ID)
  */
 class User extends Model {
     /**

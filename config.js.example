@@ -2,7 +2,8 @@
 const config = {
   // app secret (DO CHANGE THIS!)
   secret: 'UseASecureAndLongString',
-  // base URL used in links in emails
+  // base URL used in external links (mails, authentication callbacks)
+  // Use lvh.me for testing of authentication callbacks from google, facebook and co
   baseUrl: 'http://lvh.me:8080/',
   // Title shown in Browser
   title: 'Wedical',
@@ -29,8 +30,14 @@ const config = {
   authProviders: {
     // Google OAuth2
     google: {
+      // Go here and register your site: https://console.developers.google.com/apis/credentials
       clientID: '',
       clientSecret: ''
+    },
+    // Facebook
+    facebook: {
+      appID: '',
+      appSecret: ''
     }
   }
 };

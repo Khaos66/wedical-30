@@ -4,6 +4,7 @@ const NedbStore = require('nedb-session-store')(session);
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const i18n = require('i18n');
 const Authorization = require('node-authorization').Authorization;
 const compileProfile = require('node-authorization').profileCompiler;
@@ -180,6 +181,30 @@ class Auth {
                         user = await User.create({
                             googleId: profile.id,
                             strategy: Strategies.GOOGLE,
+                            name: profile.displayName,
+                            email: profile.emails[0].value,
+                            picture: profile.photos.length > 0 ? profile.photos[0].value : '',
+                            roles: [await Role.findOne({ name: 'Guest' })]
+                        });
+                    }
+                    done(undefined, user);
+                }
+            ));
+        }
+
+        // facebook
+        if (config.authProviders.facebook.appID) {
+            passport.use(new FacebookStrategy({
+                    clientID: config.authProviders.facebook.appID,
+                    clientSecret: config.authProviders.facebook.appSecret,
+                    callbackURL: `${config.baseUrl}auth/facebook/callback`
+                },
+                function(accessToken, refreshToken, profile, done) {
+                    let user = await User.findOne({ facebookId: profile.id });
+                    if (!user) {
+                        user = await User.create({
+                            facebookId: profile.id,
+                            strategy: Strategies.FACEBOOK,
                             name: profile.displayName,
                             email: profile.emails[0].value,
                             picture: profile.photos.length > 0 ? profile.photos[0].value : '',
