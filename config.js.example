@@ -5,6 +5,11 @@ const config = {
   // base URL used in external links (mails, authentication callbacks)
   // Use lvh.me for testing of authentication callbacks from google, facebook and co
   baseUrl: 'http://lvh.me:8080/',
+  // SSL Cert to use
+  cert: {
+    file: '',
+    key: '',
+  },
   // Title shown in Browser
   title: 'Wedical',
   admin: {
@@ -36,6 +41,7 @@ const config = {
     },
     // Facebook
     facebook: {
+      // Go here and register your site: https://developers.facebook.com/apps/
       appID: '',
       appSecret: ''
     }

@@ -6,6 +6,10 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# cert
+server.cert
+server.key
+
 # data
 data/*.db
 

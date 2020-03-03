@@ -3,9 +3,12 @@
 /**
  * Module dependencies.
  */
-var http = require('http');
-var debug = require('debug')('wedical:server');
-var app = require('../app');
+const http = require('http');
+const https = require('https');
+const debug = require('debug')('wedical:server');
+const app = require('../app');
+const config = require('../config');
+const fs = require('fs')
 
 // Abort, when app was not setup correctly
 if (app === null) {
@@ -21,7 +24,15 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-var server = http.createServer(app);
+var server;
+if (config.cert && config.cert.file && config.cert.key) {
+    server = https.createServer({
+        key: fs.readFileSync(config.cert.key),
+        cert: fs.readFileSync(config.cert.file)
+    }, app);
+} else {
+    server = http.createServer(app);
+}
 
 /**
  * Listen on provided port, on all network interfaces.
