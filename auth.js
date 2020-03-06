@@ -30,7 +30,7 @@ class Auth {
      */
     static authorize(objName, objFields) {
         return function (req, res, next) {
-            if (!req.user.Authorization.check(objName, objFields)) {
+            if (!req.user.Authorization || !req.user.Authorization.check(objName, objFields)) {
                 // Send HTTP FORBIDDEN
                 return res.status(403).send('Access Forbidden');
             }
@@ -195,15 +195,16 @@ class Auth {
                         googleId: profile.id
                     });
                     if (!user) {
+                        let guestRole = await Role.findOne({
+                            name: 'Guest'
+                        });
                         user = await User.create({
                             googleId: profile.id,
                             strategy: Strategies.GOOGLE,
                             name: profile.displayName,
                             email: profile.emails[0].value,
                             picture: profile.photos.length > 0 ? profile.photos[0].value : '',
-                            roles: [await Role.findOne({
-                                name: 'Guest'
-                            })]
+                            roles: [guestRole._id]
                         });
                     }
                     done(undefined, user);
@@ -226,15 +227,16 @@ class Auth {
                         facebookId: profile.id
                     });
                     if (!user) {
+                        let guestRole = await Role.findOne({
+                            name: 'Guest'
+                        });
                         user = await User.create({
                             facebookId: profile.id,
                             strategy: Strategies.FACEBOOK,
                             name: profile.displayName,
                             email: profile.emails[0].value,
                             picture: profile.photos.length > 0 ? profile.photos[0].value : '',
-                            roles: [await Role.findOne({
-                                name: 'Guest'
-                            })]
+                            roles: [guestRole._id]
                         });
                     }
                     done(undefined, user);

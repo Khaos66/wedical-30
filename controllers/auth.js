@@ -10,20 +10,31 @@ router.get('/success',
             return res.status(403).end('Authentication failed');
         }
 
+        // Find user
+        let user = await User.findOne({
+            _id: req.user.id
+        });
+        if (!user) {
+            return res.status(404).end('Not found');
+        }
+
+        // Check if invited. Else delete.
+        if (!req.session.guestid && !user.guestId) {
+            req.logout();
+            await user.remove();
+            return res.status(403).end('You don\'t seem to be invited!');
+        }
+
         // Assign guestId
         if (req.session.guestid) {
-            let user = await User.findOne({
-                _id: req.user.id
-            });
-            if (!user) {
-                return res.status(404).end('Not found');
-            }
-
             user.guestId = req.session.guestid;
+            req.session.guestid = '';
             await user.save();
         }
 
-        res.redirect('/profile');
+        let redirect_url = req.session.redirect_url || '/profile';
+
+        res.redirect(redirect_url);
     });
 
 // Google

@@ -2,13 +2,16 @@ extends main_layout.pug
 
 block nav
   nav.navbar.navbar-dark.bg-dark
-    a.navbar-brand(href="#")= title
+    a.navbar-brand(href='/manage')= title
     form.form-inline
       for lang in locales
         a(href=`?lang=${lang}`)
           img.btn-lang.mx-1(src=`/img/locales/iconfinder_${lang}.png`)
-      a.btn.btn-primary.mx-2(href='/invite')= __('Invite')
-      a.btn.btn-secondary(href='/manage')= __('Manage')
+      if user
+        a.btn.btn-secondary(href='/logout')= __('Logout')
+      else
+        a.btn.btn-primary.mx-2(href='/invite')= __('Invite')
+        a.btn.btn-secondary(href='/profile')= __('Login')
 
 block content
   include content/home.pug

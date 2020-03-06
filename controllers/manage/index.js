@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { Auth } = require('../../auth');
-const { addBreadcrump } = require('../../utils');
+const {
+    Auth
+} = require('../../auth');
+const {
+    addBreadcrump
+} = require('../../utils');
 const dataExt = require('../../extension/data-ext');
 var Guest = require('../../models/guest');
 var User = require('../../models/user');
@@ -15,7 +19,7 @@ router.get('/',
     Auth.authenticate('/manage'),
     Auth.authorize('manage', {}),
     breadcrump,
-    async function(req, res) {
+    async function (req, res) {
         let allGuests = await Guest.find();
         let genders = dataExt.countBy(allGuests, (g) => g.gender, Object.keys(Guest.genders));
         let ages = dataExt.countBy(allGuests, (g) => g.age, Object.keys(Guest.ages));
@@ -42,11 +46,21 @@ router.get('/',
             inviteStates: inviteStates,
             userCount: await User.count(),
             access: {
-                guests: req.user.Authorization.check('manage', { 'Segment': 'users' }),
-                invites: req.user.Authorization.check('manage', { 'Segment': 'invites' }),
-                qrcode: req.user.Authorization.check('manage', { 'Segment': 'qrcode' }),
-                users: req.user.Authorization.check('manage', { 'Segment': 'users' }),
-                roles: req.user.Authorization.check('manage', { 'Segment': 'roles' }),
+                guests: req.user.Authorization.check('manage', {
+                    'Segment': 'users'
+                }),
+                invites: req.user.Authorization.check('manage', {
+                    'Segment': 'invites'
+                }),
+                qrcode: req.user.Authorization.check('manage', {
+                    'Segment': 'qrcode'
+                }),
+                users: req.user.Authorization.check('manage', {
+                    'Segment': 'users'
+                }),
+                roles: req.user.Authorization.check('manage', {
+                    'Segment': 'roles'
+                }),
             },
             genders: Guest.genders,
             ages: Guest.ages,
