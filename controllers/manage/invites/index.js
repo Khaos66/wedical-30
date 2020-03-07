@@ -81,7 +81,7 @@ async function addInvite(req, res) {
             _id: removeGuest
         });
         if (guest.state === '') {
-            guest.state = 'invited';
+            guest.setAttending();
             await guest.save();
         }
     }

@@ -120,7 +120,9 @@ router.get('/:token/register/:utoken', csrfProtection, async function (req, res)
 // Define the invite register page route.
 router.post('/:token/register/:utoken',
     csrfProtection,
-    check('password').notEmpty(),
+    check('password').isLength({
+        min: 5
+    }),
     check('password2').custom((value, {
         req
     }) => value === req.body.password).withMessage('Passwords don\'t match'),

@@ -5,9 +5,11 @@ block nav
     a.navbar-brand(href='/manage')= title
     form.form-inline
       for lang in locales
-        a(href=`?lang=${lang}`)
-          img.btn-lang.mx-1(src=`/img/locales/iconfinder_${lang}.png`)
+        a.mx-1(href=`?lang=${lang}`)
+          img.btn-lang(src=`/img/locales/iconfinder_${lang}.png`)
       if user
+        a.mx-1(href='/profile')
+          img.btn-lang.rounded-circle(src=user.identity.picture)
         a.btn.btn-secondary(href='/logout')= __('Logout')
       else
         a.btn.btn-primary.mx-2(href='/invite')= __('Invite')

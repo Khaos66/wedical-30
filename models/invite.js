@@ -1,7 +1,10 @@
 const debug = require('debug')('wedical:invite');
 const path = require('path');
 const extend = require('extend');
-const { Model, Timestamps } = require('nedb-models');
+const {
+    Model,
+    Timestamps
+} = require('nedb-models');
 const ModelSanitizer = require('../extension/model-sanitizer');
 const customUtils = require('nedb/lib/customUtils');
 const config = require('../config');
@@ -57,7 +60,9 @@ class Invite extends Model {
     async decline() {
         this.state = 'declined';
         for (let guestId of this.guests) {
-            let guest = await Guest.findOne({ _id: guestId });
+            let guest = await Guest.findOne({
+                _id: guestId
+            });
             if (guest != null) {
                 guest.state = 'absent';
                 await guest.save();
@@ -71,19 +76,13 @@ class Invite extends Model {
      */
     async accept() {
         this.state = 'accepted';
-        let tokens = [];
         for (let guestId of this.guests) {
-            let guest = await Guest.findOne({ _id: guestId });
+            let guest = await Guest.findOne({
+                _id: guestId
+            });
             if (guest != null) {
                 // create guest invite token
-                let token = customUtils.uid(6);
-                while (tokens.indexOf(token) >= 0) {
-                    token = customUtils.uid(6);
-                }
-                tokens.push(token);
-                guest.token = token;
-                // set state
-                guest.state = 'attending';
+                guest.setAttending();
                 await guest.save();
             }
         }
@@ -142,16 +141,26 @@ class Invite extends Model {
     }
 }
 
-Invite.ensureIndex({ fieldName: 'token', unique: true });
+Invite.ensureIndex({
+    fieldName: 'token',
+    unique: true
+});
 
 Invite.use(Timestamps);
 Invite.use(ModelSanitizer);
 
 // all possible invite types
-Invite.types = { 'guestlist': 'Guest with an invite', 'wildcard': 'Tickets' };
+Invite.types = {
+    'guestlist': 'Guest with an invite',
+    'wildcard': 'Tickets'
+};
 
 // all possible invite states
-Invite.states = { 'open': 'Open', 'accepted': 'Accepted', 'declined': 'Declined' };
+Invite.states = {
+    'open': 'Open',
+    'accepted': 'Accepted',
+    'declined': 'Declined'
+};
 
 
 module.exports = Invite;

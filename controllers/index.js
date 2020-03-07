@@ -12,8 +12,10 @@ router.use('/login', require('./login'));
 router.use('/logout', require('./logout'));
 router.use('/auth', require('./auth'));
 
+router.use('/profile', require('./profile'));
+
 // Define the home page route.
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
     res.render('index', {
         bodyClass: 'startpage',
     });
