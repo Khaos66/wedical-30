@@ -29,6 +29,7 @@ div.container.bg-light.mt-4.p-4
           input(type='checkbox'
                 id=`comming_${guest._id}`
                 checked=(guest.state === 'attending')
+                data-height="28"
                 data-change-api=`/invite/${invite.token}/gstate/${guest._id}`
                 data-toggle='toggle'
                 data-on=__('Coming')
@@ -99,6 +100,13 @@ div.container.bg-light.mt-4.p-4
                                     data-fill-method='GET'
                                     method='POST',
                                     action=`/invite/${invite.token}/ginvite/{id}`)
+    div.alert.alert-warning
+      div.h5= __('This link is only for this guest')
+      div.input-group
+        div.input-group-prepend
+          span.input-group-text
+            i.fas.fa-user
+        input.form-control(type='text', name='name', readonly)
     div.alert.alert-info
       div.h5= __('You can eighter fill out the e-mail address below to send this link or copy & paste it into any messager app')
       div.input-group

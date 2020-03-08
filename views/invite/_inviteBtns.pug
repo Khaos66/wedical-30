@@ -1,5 +1,5 @@
 mixin declineBtn
-    a(href=`/invite/${invite.token}/decline`)&attributes(attributes) Decline
+    a(href=`/invite/${invite.token}/decline`)&attributes(attributes)= __('Decline')
 
 mixin acceptBtn
-    a(href=`/invite/${invite.token}/accept`)&attributes(attributes) Accept
+    a(href=`/invite/${invite.token}/accept`)&attributes(attributes)= __('Accept')
