@@ -77,7 +77,7 @@ async function findInviteGuest(req) {
 }
 
 // Define the invite code page route.
-router.get('/', csrfProtection, function (req, res) {
+router.get('/', csrfProtection, function(req, res) {
     res.render('invite/code.pug', {
         csrfToken: req.csrfToken(),
         bodyClass: 'invite invite-code',
@@ -86,7 +86,7 @@ router.get('/', csrfProtection, function (req, res) {
 
 
 // Define the invite register page route.
-router.get('/:token/register/:utoken', csrfProtection, async function (req, res) {
+router.get('/:token/register/:utoken', csrfProtection, async function(req, res) {
     if (!req.params.token || !req.params.utoken) {
         return result.status(404).end();
     }
@@ -127,7 +127,7 @@ router.post('/:token/register/:utoken',
         req
     }) => value === req.body.password).withMessage('Passwords don\'t match'),
     check('email').isEmail().bail().custom(checkEmailExists),
-    async function (req, res) {
+    async function(req, res) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({
@@ -168,7 +168,7 @@ router.post('/:token/register/:utoken',
         await user.save();
 
         // login as the new user
-        req.login(user, function (err) {
+        req.login(user, function(err) {
             if (err) {
                 return next(err);
             }
@@ -183,7 +183,7 @@ router.post('/:token/register/:utoken',
 router.post('/',
     csrfProtection,
     check('token').notEmpty().bail().custom(checkTokenExists),
-    function (req, res) {
+    function(req, res) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             debug(`invite form error: ${errors}`);
@@ -193,7 +193,7 @@ router.post('/',
     });
 
 // Define the invite page route.
-router.get('/:token', csrfProtection, async function (req, res) {
+router.get('/:token', csrfProtection, async function(req, res) {
     if (!req.params.token) {
         return res.redirect('/invite');
     }
@@ -224,7 +224,7 @@ router.get('/:token', csrfProtection, async function (req, res) {
 
 
 // Define the decline invite route.
-router.get('/:token/decline', csrfProtection, async function (req, res) {
+router.get('/:token/decline', csrfProtection, async function(req, res) {
     if (!req.params.token) {
         return res.redirect('/invite');
     }
@@ -242,7 +242,7 @@ router.get('/:token/decline', csrfProtection, async function (req, res) {
 });
 
 // Define the accept invite route.
-router.get('/:token/accept', csrfProtection, async function (req, res) {
+router.get('/:token/accept', csrfProtection, async function(req, res) {
     if (!req.params.token) {
         return res.redirect('/invite');
     }
@@ -260,7 +260,7 @@ router.get('/:token/accept', csrfProtection, async function (req, res) {
 });
 
 // Define the change guest state route.
-router.post('/:token/gstate/:uid', csrfProtection, async function (req, res) {
+router.post('/:token/gstate/:uid', csrfProtection, async function(req, res) {
     let result = await findInviteGuest(req);
     if (!result || req.body.value === undefined) {
         return result.status(404).end();
@@ -278,7 +278,7 @@ router.post('/:token/gstate/:uid', csrfProtection, async function (req, res) {
 });
 
 // Define the get guest diet/allergies route.
-router.get('/:token/gdiet/:uid', csrfProtection, async function (req, res) {
+router.get('/:token/gdiet/:uid', csrfProtection, async function(req, res) {
     let result = await findInviteGuest(req);
     if (!result) {
         return result.status(404).end();
@@ -298,7 +298,7 @@ router.get('/:token/gdiet/:uid', csrfProtection, async function (req, res) {
 });
 
 // Define the put guest diet/allergies route.
-router.put('/:token/gdiet/:uid', csrfProtection, async function (req, res) {
+router.put('/:token/gdiet/:uid', csrfProtection, async function(req, res) {
     let result = await findInviteGuest(req);
     if (!result || req.body.allergy1 === undefined || req.body.diet1 === undefined) {
         return result.status(404).end();
@@ -308,7 +308,7 @@ router.put('/:token/gdiet/:uid', csrfProtection, async function (req, res) {
     result.guest.diet = [];
 
     for (var field in req.body) {
-        if (typeof (req.body[field]) !== 'string' || !req.body[field]) {
+        if (typeof(req.body[field]) !== 'string' || !req.body[field]) {
             continue;
         }
         if (field.startsWith('allergy')) {
@@ -324,7 +324,7 @@ router.put('/:token/gdiet/:uid', csrfProtection, async function (req, res) {
 });
 
 // Define the get guest invite link route.
-router.get('/:token/ginvite/:uid', csrfProtection, async function (req, res) {
+router.get('/:token/ginvite/:uid', csrfProtection, async function(req, res) {
     let result = await findInviteGuest(req);
     if (!result) {
         return result.status(404).end();
@@ -335,13 +335,14 @@ router.get('/:token/ginvite/:uid', csrfProtection, async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     return res.end(JSON.stringify({
         data: {
+            name: result.guest.name,
             inviteLink: result.guest.inviteLink
         }
     }));
 });
 
 // Define the get guest invite link route.
-router.post('/:token/ginvite/:uid', csrfProtection, async function (req, res) {
+router.post('/:token/ginvite/:uid', csrfProtection, async function(req, res) {
     let result = await findInviteGuest(req);
     if (!result || !req.body.mail) {
         return result.status(404).end();

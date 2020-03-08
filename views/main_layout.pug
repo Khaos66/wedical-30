@@ -1,3 +1,4 @@
+include includes/_navbar.pug
 doctype html
 html
   head
@@ -8,7 +9,7 @@ html
     include _commonStyles.pug
 
   body(class=bodyClass)
-    block nav
+    +pagenav().navbar-dark.bg-dark
     #grid
     block content
     include _commonScripts.pug

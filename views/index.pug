@@ -1,19 +1,4 @@
 extends main_layout.pug
 
-block nav
-  nav.navbar.navbar-dark.bg-dark
-    a.navbar-brand(href='/manage')= title
-    form.form-inline
-      for lang in locales
-        a.mx-1(href=`?lang=${lang}`)
-          img.btn-lang(src=`/img/locales/iconfinder_${lang}.png`)
-      if user
-        a.mx-1(href='/profile')
-          img.btn-lang.rounded-circle(src=user.identity.picture)
-        a.btn.btn-secondary(href='/logout')= __('Logout')
-      else
-        a.btn.btn-primary.mx-2(href='/invite')= __('Invite')
-        a.btn.btn-secondary(href='/profile')= __('Login')
-
 block content
   include content/home.pug
