@@ -1,7 +1,11 @@
 const debug = require('debug')('wedical:guest');
 const path = require('path');
 const extend = require('extend');
-const { Model, Timestamps } = require('nedb-models');
+const customUtils = require('nedb/lib/customUtils');
+const {
+    Model,
+    Timestamps
+} = require('nedb-models');
 const ModelSanitizer = require('../extension/model-sanitizer');
 
 /**
@@ -16,6 +20,10 @@ const ModelSanitizer = require('../extension/model-sanitizer');
  * - gender
  * - age
  * - expected
+ * - state
+ * - allergy
+ * - diet
+ * - token
  */
 class Guest extends Model {
     /**
@@ -47,6 +55,10 @@ class Guest extends Model {
                 gender: '',
                 age: '',
                 expected: 'unsure',
+                state: '',
+                allergy: [],
+                diet: [],
+                token: '',
             },
         });
     }
@@ -58,18 +70,50 @@ class Guest extends Model {
         this.email = this.email.trim().toLowerCase();
         this.name = this.name.trim();
     }
+
+    /**
+     *
+     */
+    setAttending() {
+        this.token = customUtils.uid(6);
+        this.state = 'attending';
+    }
 }
 
 Guest.use(Timestamps);
 Guest.use(ModelSanitizer);
 
 // all possible genders
-Guest.genders = { 'undefined': 'Undefined', 'm': 'Male', 'd': 'Diverse', 'f': 'Female' };
+Guest.genders = {
+    'undefined': 'Undefined',
+    'm': 'Male',
+    'd': 'Diverse',
+    'f': 'Female'
+};
 
 // all possible ages
-Guest.ages = { 'undefined': 'Undefined', 'baby': 'Baby', 'child': 'Child', 'teen': 'Teen', 'youndAdult': 'Young Adult', 'adult': 'Adult', 'senior': 'Senoir' };
+Guest.ages = {
+    'undefined': 'Undefined',
+    'baby': 'Baby',
+    'child': 'Child',
+    'teen': 'Teen',
+    'youndAdult': 'Young Adult',
+    'adult': 'Adult',
+    'senior': 'Senoir'
+};
 
 // all possible expectations
-Guest.expectations = { 'expected': 'Will sure come', 'unsure': 'Might come', 'unexpected': 'Might not come'} 
+Guest.expectations = {
+    'expected': 'Will sure come',
+    'unsure': 'Might come',
+    'unexpected': 'Might not come'
+};
+
+// all possible states
+Guest.states = {
+    'invited': 'Invited',
+    'absent': 'Absent',
+    'attending': 'Attending'
+};
 
 module.exports = Guest;

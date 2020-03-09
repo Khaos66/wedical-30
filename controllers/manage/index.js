@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { Auth } = require('../../auth');
-const { addBreadcrump } = require('../../utils');
+const {
+    Auth
+} = require('../../auth');
+const {
+    addBreadcrump
+} = require('../../utils');
 const dataExt = require('../../extension/data-ext');
 var Guest = require('../../models/guest');
 var User = require('../../models/user');
@@ -15,31 +19,55 @@ router.get('/',
     Auth.authenticate('/manage'),
     Auth.authorize('manage', {}),
     breadcrump,
-    async function(req, res) {
+    async function (req, res) {
         let allGuests = await Guest.find();
         let genders = dataExt.countBy(allGuests, (g) => g.gender, Object.keys(Guest.genders));
         let ages = dataExt.countBy(allGuests, (g) => g.age, Object.keys(Guest.ages));
         let expectations = dataExt.countBy(allGuests, (g) => g.expected, Object.keys(Guest.expectations));
+        let guestStates = dataExt.countBy(allGuests, (g) => g.state, ['invited', 'attending', 'absent']);
+        let guestAllergies = dataExt.countBy(allGuests, (g) => g.allergy || [], undefined, (g) => g.state === 'attending' ? 1 : 0);
+        let guestDiets = dataExt.countBy(allGuests, (g) => g.diet || [], undefined, (g) => g.state === 'attending' ? 1 : 0);
 
         let allInvites = await Invite.find();
         let invites = dataExt.countBy(allInvites, (g) => g.type, ['guestlist', 'wildcard'], (g) => g.type === 'guestlist' ? g.guests.length : g.tickets);
+        let inviteStates = dataExt.countBy(allInvites, (g) => g.state);
 
         res.render('manage/index', {
             guestCount: allGuests.length,
             guestGenders: genders,
             guestAges: ages,
             guestsExpected: expectations,
+            guestStates: guestStates,
+            guestAllergies: guestAllergies,
+            guestDiets: guestDiets,
             inviteCount: allInvites.length,
             inviteSum: dataExt.sum(invites),
             invites: invites,
+            inviteStates: inviteStates,
             userCount: await User.count(),
             access: {
-                guests: req.user.Authorization.check('manage', { 'Segment': 'users' }),
-                invites: req.user.Authorization.check('manage', { 'Segment': 'invites' }),
-                qrcode: req.user.Authorization.check('manage', { 'Segment': 'qrcode' }),
-                users: req.user.Authorization.check('manage', { 'Segment': 'users' }),
-                roles: req.user.Authorization.check('manage', { 'Segment': 'roles' }),
-            }
+                guests: req.user.Authorization.check('manage', {
+                    'Segment': 'users'
+                }),
+                invites: req.user.Authorization.check('manage', {
+                    'Segment': 'invites'
+                }),
+                qrcode: req.user.Authorization.check('manage', {
+                    'Segment': 'qrcode'
+                }),
+                users: req.user.Authorization.check('manage', {
+                    'Segment': 'users'
+                }),
+                roles: req.user.Authorization.check('manage', {
+                    'Segment': 'roles'
+                }),
+            },
+            genders: Guest.genders,
+            ages: Guest.ages,
+            expectations: Guest.expectations,
+            statesOfGuests: Guest.states,
+            typesOfInvites: Invite.types,
+            statesOfInvites: Invite.states,
         });
     });
 /*

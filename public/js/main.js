@@ -20,6 +20,8 @@
     $('.modal').modalTooltips();
     // Reset forms in modals
     $('.modal.clear-form').modalResetForm();
+    // Fill forms when modals are shown
+    $('.modal.populate-form').modalPopulateForm();
 
     // init endless input containers
     $('.endlessInput').endlessInput();
@@ -36,6 +38,15 @@
 
     // Multi-Selects with QuickSearch
     $('.quickMultiSelect').quickMultiSelect();
+
+    // Send changes via POST
+    $('[data-change-api]').postChange();
+
+    // Show and hide content based on checkboxes
+    $('[data-visible-when]').visibleWhen();
+
+    // Copy to clipboard buttons
+    $('[data-copy-target]').copyToClipboard();
 
     // Radio toggles
     $('input[data-toggle="radio"][data-target]').each(function() {
@@ -72,5 +83,8 @@ function handleModalSuccess(element) {
         $(element.data('redrawTable')).each(function() {
             this.reloadTable();
         });
+    }
+    if (element.hasClass('page-refresh')) {
+        location.reload();
     }
 }

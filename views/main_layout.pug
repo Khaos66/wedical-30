@@ -1,12 +1,15 @@
+include includes/_navbar.pug
 doctype html
 html
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='csrf-token', content=csrfToken)
     title= title
     include _commonStyles.pug
 
-  body.startpage
-    block nav
+  body(class=bodyClass)
+    +pagenav().navbar-dark.bg-dark
+    #grid
     block content
     include _commonScripts.pug

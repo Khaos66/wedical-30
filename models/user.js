@@ -16,6 +16,11 @@ const ModelSanitizer = require('../extension/model-sanitizer');
  * - roles
  * - salt
  * - pwHash
+ * - guestId
+ * - picture
+ *
+ * - googleId (OAuth2 Google profile ID)
+ * - facebookId (OAuth Facebook profile ID)
  */
 class User extends Model {
     /**
@@ -43,6 +48,8 @@ class User extends Model {
                 email: '',
                 strategy: Strategies.UNKNOWN,
                 roles: [],
+                guestId: '',
+                picture: ''
             },
         });
     }

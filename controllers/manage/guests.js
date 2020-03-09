@@ -113,7 +113,13 @@ router.get('/',
     Auth.authorize('manage', { 'Segment': 'guests' }),
     addBreadcrump('Guest List', '/manage/guests'),
     function(req, res) {
-        res.render('manage/guests', { csrfToken: req.csrfToken() });
+        res.render('manage/guests', { 
+            csrfToken: req.csrfToken(),
+            genders: Guest.genders,
+            ages: Guest.ages,
+            expectations: Guest.expectations,
+            statesOfGuests: Guest.states,
+        });
     });
 
 // /list feeds DataTable in client with data

@@ -24,11 +24,31 @@ module.exports = (function() {
 
         for (let entry of collection) {
             let value = selector(entry);
+            if (keys) {
+                if (keys.indexOf(value) < 0) {
+                    continue;
+                }
+            }
+
             let increment = valueSelector(entry);
-            if (sums[value]) {
-                sums[value] += increment;
+            if (increment === 0) {
+                continue;
+            }
+
+            if (Array.isArray(value)) {
+                for (let val of value) {
+                    if (sums[val]) {
+                        sums[val] += increment;
+                    } else {
+                        sums[val] = increment;
+                    }
+                }
             } else {
-                sums[value] = increment;
+                if (sums[value]) {
+                    sums[value] += increment;
+                } else {
+                    sums[value] = increment;
+                }
             }
         }
         return sums;

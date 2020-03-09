@@ -6,6 +6,10 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# cert
+server.cert
+server.key
+
 # data
 data/*.db
 
@@ -15,6 +19,9 @@ public/styles/*.css.map
 
 # actual config-file
 config.js
+
+# user avatars
+public/img/avatars/*.*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

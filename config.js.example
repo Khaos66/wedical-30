@@ -2,8 +2,14 @@
 const config = {
   // app secret (DO CHANGE THIS!)
   secret: 'UseASecureAndLongString',
-  // base URL used in links in emails
-  baseUrl: 'http://localhost:3000/',
+  // base URL used in external links (mails, authentication callbacks)
+  // Use lvh.me for testing of authentication callbacks from google, facebook and co
+  baseUrl: 'http://lvh.me:8080/',
+  // SSL Cert to use
+  cert: {
+    file: '',
+    key: '',
+  },
   // Title shown in Browser
   title: 'Wedical',
   admin: {
@@ -14,6 +20,32 @@ const config = {
   },
   // locales you want to support (icon collection: https://www.iconfinder.com/iconsets/195-flat-flag-psd-icons)
   locales: ['en', 'de'],
+  // SMTP configuration (see: https://nodemailer.com/smtp/)
+  smtp: {
+    host: 'localhost',
+    port: 465,
+    secure: true,
+    auth: {
+      user: "username",
+      pass: "password"
+    }
+  },
+  mailFrom: 'sender@yourserver.com',
+  // Alternative authentication providers
+  authProviders: {
+    // Google OAuth2
+    google: {
+      // Go here and register your site: https://console.developers.google.com/apis/credentials
+      clientID: '',
+      clientSecret: ''
+    },
+    // Facebook
+    facebook: {
+      // Go here and register your site: https://developers.facebook.com/apps/
+      appID: '',
+      appSecret: ''
+    }
+  }
 };
 
 module.exports = config;

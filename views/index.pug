@@ -1,15 +1,4 @@
 extends main_layout.pug
 
-block nav
-  nav.navbar.navbar-dark.bg-dark
-    a.navbar-brand(href="#")
-      img.d-inline-block.align-top(src="/img/logo30.png" width="30" height="30" alt="")
-    form.form-inline
-      for lang in locales
-        a(href=`?lang=${lang}`)
-          img.btn-lang.mx-1(src=`/img/locales/iconfinder_${lang}.png`)
-      a.btn.btn-outline-success.rounded-0.mx-2(href='/invite')= __('Invite')
-      a.btn.btn-outline-secondary.rounded-0(href='/manage')= __('Manage')
-
 block content
   include content/home.pug

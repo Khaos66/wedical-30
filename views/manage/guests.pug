@@ -24,18 +24,20 @@ block content
         a.text-success(href='#', data-toggle='modal', data-target='#addGuestModal')
             i.fas.fa-plus.fa-2x(aria-hidden='true')
     table.data-table.table.table-responsive-md#guestsTable(data-page-length='25',
-                                                        data-age-column='1'
-                                                        data-gender-column='2'
-                                                        data-expected-column='3'
-                                                        data-action-column='4'
+                                                        data-gstate-column='0'
+                                                        data-age-column='2'
+                                                        data-gender-column='3'
+                                                        data-expected-column='4'
+                                                        data-action-column='5'
                                                         data-delete-modal='#deleteGuestModal'
                                                         data-edit-modal='#editGuestModal'
                                                         data-edit-form='#editGuestForm'
-                                                        data-group-column='5'
-                                                        data-order='[[ 1, "asc" ]]',
+                                                        data-group-column='6'
+                                                        data-order='[[ 2, "asc" ]]',
                                                         data-ajax='/manage/guests/list',
-                                                        data-columns='[{"data": "name"},{"data": "age", "className": "dt-body-center"},{"data": "gender", "className": "dt-body-center"},{"data": "expected", "className": "dt-body-center"},{"data": "_id"},{"data": "group"}]')
+                                                        data-columns='[{"data": "state"},{"data": "name"},{"data": "age", "className": "dt-body-center"},{"data": "gender", "className": "dt-body-center"},{"data": "expected", "className": "dt-body-center"},{"data": "_id"},{"data": "group"}]')
         colgroup
+            col(width='1')
             col(width='100%')
             col(width='1')
             col(width='1')
@@ -44,6 +46,9 @@ block content
             col(width='1')
         thead
             tr
+                th
+                    i.fas.fa-envelope-open.d-md-none(data-toggle='tooltip', data-title=__('State'))
+                    span.d-none.d-md-block= __('State')
                 th
                     i.fas.fa-signature.d-md-none(data-toggle='tooltip', data-title=__('Name'))
                     span.d-none.d-md-block= __('Name')
@@ -142,5 +147,16 @@ block content
                     each text, expectation in expectations
                         if expectation !== 'undefined'
                             +expectationBtn(expectation, 'expected')
+            +editFormGroup('state', __('State'))
+                div.btn-group.btn-group-toggle(data-toggle='buttons')
+                    label.btn.lazy-tooltip.btn-expectation-unsure(data-toggle='tooltip', title=__('Invited'))
+                        input(type='radio', name='state', value='invited', autocomplete='off')
+                        i.fas.fa-envelope
+                    label.btn.lazy-tooltip.btn-expectation-expected(data-toggle='tooltip', title=__('Attending'))
+                        input(type='radio', name='state', value='attending', autocomplete='off')
+                        i.fas.fa-check
+                    label.btn.lazy-tooltip.btn-expectation-unexpected(data-toggle='tooltip', title=__('Absent'))
+                        input(type='radio', name='state', value='absent', autocomplete='off')
+                        i.fas.fa-times
             +editFormGroup('updatedAt', __('Last Change'))
                 input.form-control-plaintext(type='text', readonly, name='updatedAt', data-format='datetime')

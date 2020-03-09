@@ -1,21 +1,26 @@
 const debug = require('debug')('wedical:invite');
 const path = require('path');
 const extend = require('extend');
-const { Model, Timestamps } = require('nedb-models');
+const {
+    Model,
+    Timestamps
+} = require('nedb-models');
 const ModelSanitizer = require('../extension/model-sanitizer');
 const customUtils = require('nedb/lib/customUtils');
 const config = require('../config');
 const QRcode = require('./qrcode');
+var Guest = require('./guest');
 
 /**
  * Model for invitations
  *
  * Properties:
  * - title
- * - type (guestlist/wildcard)
+ * - type (guestlist, wildcard)
  * - guests
  * - tickets
  * - token
+ * - state (open, declined, accepted)
  */
 class Invite extends Model {
     /**
@@ -40,12 +45,48 @@ class Invite extends Model {
         return extend(true, super.defaults(), {
             values: {
                 title: '',
+                state: 'open',
                 guests: [],
                 type: 'guestlist',
                 tickets: 0,
                 token: customUtils.uid(6)
             },
         });
+    }
+
+    /**
+     * Declines an invite for all guests
+     */
+    async decline() {
+        this.state = 'declined';
+        for (let guestId of this.guests) {
+            let guest = await Guest.findOne({
+                _id: guestId
+            });
+            if (guest != null) {
+                guest.state = 'absent';
+                await guest.save();
+            }
+        }
+        await this.save();
+    }
+
+    /**
+     * Accepts an invite for all guests
+     */
+    async accept() {
+        this.state = 'accepted';
+        for (let guestId of this.guests) {
+            let guest = await Guest.findOne({
+                _id: guestId
+            });
+            if (guest != null) {
+                // create guest invite token
+                guest.setAttending();
+                await guest.save();
+            }
+        }
+        await this.save();
     }
 
     /**
@@ -61,6 +102,15 @@ class Invite extends Model {
         } else if (!Array.isArray(this.guests)) {
             this.guests = [this.guests];
         }
+    }
+
+    /**
+     * Adds the inviteLink field to a guest
+     * @param {Guest} guest
+     */
+    addInviteLink(guest) {
+        guest.inviteLink = this.getInviteUrl() + '/register/' + guest.token;
+        return guest;
     }
 
     /**
@@ -91,9 +141,26 @@ class Invite extends Model {
     }
 }
 
-Invite.ensureIndex({ fieldName: 'token', unique: true });
+Invite.ensureIndex({
+    fieldName: 'token',
+    unique: true
+});
 
 Invite.use(Timestamps);
 Invite.use(ModelSanitizer);
+
+// all possible invite types
+Invite.types = {
+    'guestlist': 'Guest with an invite',
+    'wildcard': 'Tickets'
+};
+
+// all possible invite states
+Invite.states = {
+    'open': 'Open',
+    'accepted': 'Accepted',
+    'declined': 'Declined'
+};
+
 
 module.exports = Invite;
