@@ -5,28 +5,48 @@ block content
     div.card-header
       h2= __('Login')
     div.card-body
-      form(method='post', action='/login')
-        input(type='hidden', name='_csrf' value=csrfToken)
-        input(type='hidden', name='redirect_url', value=query.redirect_url)
-        div.form-group.row
-          label.col-sm-3.col-form-label(for='email')= __('Email')
-          div.col-sm-9
-            input.form-control#email(type='email', name='email', placeholder='example@web.com')
-        div.form-group.row
-          label.col-sm-3.col-form-label(for='password')= __('Password')
-          div.col-sm-9
-            input.form-control#password(type='password', name='password', placeholder='****')
-        if Object.entries(errors).length !== 0
-          div.row
-            div.col-sm-12
-              div.alert.alert-danger.pb-0(role='alert')
-                each err in errors
-                  p
-                    b= err.param
-                    | :
-                    |
-                    |
-                    = err.msg
-        div.form-group.row
-          div.col-sm-4.offset-sm-8
-            button.btn.btn-info.w-100(type='submit')= __('Login')
+      div.container
+        div.row
+          div.col-sm-8.offset-sm-2
+            a.btn.btn-outline-dark.w-100.d-flex(href='/auth/google')
+              span.gicon.fa-pull-left
+              span.align-self-center.ml-2= __('Continue with Google')
+        div.row.my-2
+          div.col-sm-8.offset-sm-2
+            a.btn.btn-outline-light.bg-primary.text-white.w-100.d-flex(href='/auth/facebook')
+              span.fbicon.gicon.fa-pull-left
+              span.align-self-center.ml-2= __('Continue with Facebook')
+        div.row.d-flex.mb-3.mt-4
+          div.col-2.offset-2.align-self-center.w-100
+              div.border-top.border-dark
+          div.col-4.text-center
+              span= __('or login here')
+          div.col-2.align-self-center.w-100
+              div.border-top.border-dark
+        div.row
+          div.col
+            form(method='post', action='/login')
+              input(type='hidden', name='_csrf' value=csrfToken)
+              input(type='hidden', name='redirect_url', value=query.redirect_url)
+              div.form-group.row
+                label.col-sm-3.col-form-label(for='email')= __('Email')
+                div.col-sm-9
+                  input.form-control#email(type='email', name='email', placeholder='example@web.com')
+              div.form-group.row
+                label.col-sm-3.col-form-label(for='password')= __('Password')
+                div.col-sm-9
+                  input.form-control#password(type='password', name='password', placeholder='****')
+              if Object.entries(errors).length !== 0
+                div.row
+                  div.col-sm-12
+                    div.alert.alert-danger.pb-0(role='alert')
+                      each err in errors
+                        p
+                          b= err.param
+                          | :
+                          |
+                          |
+                          = err.msg
+              div.form-group.row
+                div.col-sm-4.offset-sm-8
+                  button.btn.btn-info.w-100(type='submit')= __('Login')

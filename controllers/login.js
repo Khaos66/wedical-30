@@ -10,9 +10,15 @@ const csrf = require('csurf');
 var csrfProtection = csrf();
 
 // Define the login page route.
-router.get('/', csrfProtection, function(req, res) {
+router.get('/', csrfProtection, function (req, res) {
     debug('serve login page');
-    res.render('login/login', { csrfToken: req.csrfToken() });
+
+    // store redirect_url in session for redirect after social login
+    req.session.redirect_url = req.query.redirect_url;
+
+    res.render('login/login', {
+        csrfToken: req.csrfToken()
+    });
 });
 
 // Handle login POST
@@ -20,8 +26,10 @@ router.post('/',
     csrfProtection,
     // Validate input
     validator.body('email', i18n.__('not a valid email.')).isEmail(),
-    validator.body('password', i18n.__('has to be at least 5 characters long.')).isLength({ min: 4 }),
-    function(req, res, next) {
+    validator.body('password', i18n.__('has to be at least 5 characters long.')).isLength({
+        min: 4
+    }),
+    function (req, res, next) {
         debug('Got login POST. Redirect to: ' + encodeURIComponent(req.body.redirect_url));
         // Check for validation errors
         const errors = validator.validationResult(req);
@@ -31,7 +39,9 @@ router.post('/',
             return res.redirect('/login?redirect_url=' + encodeURIComponent(req.body.redirect_url));
         }
 
-        passport.authenticate('local', { failureFlash: true }, function(err, user, info) {
+        passport.authenticate('local', {
+            failureFlash: true
+        }, function (err, user, info) {
             // Handle authenticate result
             debug('authentication. info: ' + JSON.stringify(info));
             // Error
@@ -48,7 +58,7 @@ router.post('/',
             }
 
             // Login valid => login user
-            req.logIn(user, function(err) {
+            req.logIn(user, function (err) {
                 // Error while login
                 if (err) {
                     debug('login failed with err: ' + JSON.stringify(err));

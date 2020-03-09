@@ -15,5 +15,13 @@
     "Phone": "Telefon",
     "Phone Number": "Telefonnummer",
     "User Roles": "Benutzerrollen",
-    "Changing roles takes effect only after a fresh login": "Änderungen an Benutzerrollen wirken sich erst beim nächsten Login aus"
+    "Changing roles takes effect only after a fresh login": "Änderungen an Benutzerrollen wirken sich erst beim nächsten Login aus",
+    "Guest with an invite": "Gäste mit Einladung",
+    "Tickets": "Tickets",
+    "Open": "Offen",
+    "Accepted": "Zugesagt",
+    "Declined": "Abgesagt",
+    "Invited": "Eingeladen",
+    "Attending": "Kommen",
+    "Absent": "Kommen nicht"
 }

@@ -2,10 +2,17 @@ const debug = require('debug')('wedical:manage-guests');
 const express = require('express');
 const router = express.Router();
 const csrf = require('csurf');
-const { check, validationResult } = require('express-validator');
+const {
+    check,
+    validationResult
+} = require('express-validator');
 const reqSanitizer = require('../../../extension/request-sanitizer');
-const { Auth } = require('../../../auth');
-const { addBreadcrump } = require('../../../utils');
+const {
+    Auth
+} = require('../../../auth');
+const {
+    addBreadcrump
+} = require('../../../utils');
 var Invite = require('../../../models/invite');
 var Guest = require('../../../models/guest');
 
@@ -16,10 +23,14 @@ async function getInvite(req, res) {
     if (req.params.id) {
         debug(`Get invite with id: ${req.params.id}`);
         res.setHeader('CSRF-Token', req.csrfToken());
-        let invite = await Invite.findOne({ _id: req.params.id });
+        let invite = await Invite.findOne({
+            _id: req.params.id
+        });
         if (invite) {
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({ data: invite.toPOJO() }));
+            res.end(JSON.stringify({
+                data: invite.toPOJO()
+            }));
         } else {
             debug('ERROR: Invite not found!');
         }
@@ -33,7 +44,9 @@ async function delInvite(req, res) {
     if (req.params.id) {
         debug(`Deleting invite with id: ${req.params.id}`);
         res.setHeader('CSRF-Token', req.csrfToken());
-        let invite = await Invite.findOne({ _id: req.params.id });
+        let invite = await Invite.findOne({
+            _id: req.params.id
+        });
         if (invite) {
             await invite.remove();
             return res.status(200).end('ok');
@@ -49,7 +62,9 @@ async function delInvite(req, res) {
 async function addInvite(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
+        return res.status(422).json({
+            errors: errors.array()
+        });
     }
 
     // Create new invite
@@ -60,6 +75,17 @@ async function addInvite(req, res) {
     invite.assign(req.body);
     await invite.save();
 
+    // Change state of added guests
+    for (var removeGuest of invite.guests) {
+        var guest = await Guest.findOne({
+            _id: removeGuest
+        });
+        if (guest.state === '') {
+            guest.setAttending();
+            await guest.save();
+        }
+    }
+
     res.setHeader('CSRF-Token', req.csrfToken());
     res.status(200).end('ok');
 }
@@ -67,16 +93,55 @@ async function addInvite(req, res) {
 async function putInvite(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
+        return res.status(422).json({
+            errors: errors.array()
+        });
     }
 
     if (req.params.id) {
         debug(`Put invite with id: ${req.params.id}`);
         res.setHeader('CSRF-Token', req.csrfToken());
-        let invite = await Invite.findOne({ _id: req.params.id });
+        let invite = await Invite.findOne({
+            _id: req.params.id
+        });
         if (invite) {
+            // Change state of removed guests
+            for (var removeGuest of invite.guests) {
+                if (!req.body.guests || req.body.guests.indexOf(removeGuest) < 0) {
+                    var guest = await Guest.findOne({
+                        _id: removeGuest
+                    });
+                    if (guest.state === 'invited') {
+                        guest.state = '';
+                        await guest.save();
+                    }
+                }
+            }
+            // Change state of added guests
+            if (req.body.guests) {
+                if (!Array.isArray(req.body.guests)) {
+                    req.body.guests = [req.body.guests];
+                }
+                for (var addGuest of req.body.guests) {
+                    if (invite.guests.indexOf(addGuest) < 0) {
+                        var guest = await Guest.findOne({
+                            _id: addGuest
+                        });
+                        if (guest.state === '') {
+                            guest.state = 'invited';
+                            await guest.save();
+                        }
+                    }
+                }
+            } else {
+                // No more guests selected
+                invite.guests = [];
+            }
+
+            // save new invite details
             invite.assign(req.body);
             await invite.save();
+
             return res.status(200).end('ok');
         } else {
             debug('ERROR: Invite not found!');
@@ -104,9 +169,11 @@ router.use('/qrprint', breadcrump, require('./qrprint'));
 router.get('/',
     csrfProtection,
     Auth.authenticate('/manage/invites'),
-    Auth.authorize('manage', { 'Segment': 'invites' }),
+    Auth.authorize('manage', {
+        'Segment': 'invites'
+    }),
     breadcrump,
-    async function(req, res) {
+    async function (req, res) {
         res.render('manage/invites/index', {
             csrfToken: req.csrfToken(),
             guests: await Guest.find(),
@@ -117,14 +184,18 @@ router.get('/',
 router.get('/list',
     csrfProtection,
     Auth.authenticate(false),
-    Auth.authorize('manage', { 'Segment': 'invites' }),
+    Auth.authorize('manage', {
+        'Segment': 'invites'
+    }),
     listInvites);
 
 // Add invite
 router.post('/',
     csrfProtection,
     Auth.authenticate(false),
-    Auth.authorize('manage', { 'Segment': 'invites' }),
+    Auth.authorize('manage', {
+        'Segment': 'invites'
+    }),
     check('title').notEmpty(),
     check('type').notEmpty(),
     addInvite
@@ -134,7 +205,9 @@ router.post('/',
 router.delete('/:id',
     csrfProtection,
     Auth.authenticate(false),
-    Auth.authorize('manage', { 'Segment': 'invites' }),
+    Auth.authorize('manage', {
+        'Segment': 'invites'
+    }),
     delInvite
 );
 
@@ -142,7 +215,9 @@ router.delete('/:id',
 router.get('/:id',
     csrfProtection,
     Auth.authenticate(false),
-    Auth.authorize('manage', { 'Segment': 'invites' }),
+    Auth.authorize('manage', {
+        'Segment': 'invites'
+    }),
     getInvite
 );
 
@@ -150,7 +225,9 @@ router.get('/:id',
 router.put('/:id',
     csrfProtection,
     Auth.authenticate(false),
-    Auth.authorize('manage', { 'Segment': 'invites' }),
+    Auth.authorize('manage', {
+        'Segment': 'invites'
+    }),
     reqSanitizer.removeBody(['_id', 'createdAt', 'updatedAt']),
     check('title').notEmpty(),
     check('type').notEmpty(),

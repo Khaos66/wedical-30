@@ -1,0 +1,7 @@
+mixin codeForm
+    form.form-inline(method='POST', action='/invite')
+        input(type='hidden', name='_csrf', value=csrfToken)
+        div.input-group
+            input.form-control.form-control(type='text', name='token', placeholder=__('Invite Code'))
+            div.input-group-append
+                button.btn.btn-primary(type='submit')= __('Send')

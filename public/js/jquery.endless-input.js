@@ -14,7 +14,6 @@
             var addFields = function() {
                 var group = template.clone(true);
                 var index = counter++;
-
                 var replaceIndex = function(element, attribute) {
                     if (element.attr(attribute)) {
                         element.attr(attribute, element.attr(attribute).replace('%s', index));
@@ -39,6 +38,7 @@
 
             // add first input group
             addFields();
+            this.addFields = addFields;
 
             // Add function to reset the input group
             container.addClass('endlessInputEnabled');
@@ -51,7 +51,11 @@
     };
 
     $.fn.resetEndlessForm = function() {
-        return this.filter('.endlessInputEnabled').each(function() {
+        var endlessContainer = this.find('.endlessInput');
+        if (endlessContainer.length == 0) {
+            endlessContainer = this;
+        }
+        return endlessContainer.filter('.endlessInputEnabled').each(function() {
             this.resetEndlessInputs();
         });
     };

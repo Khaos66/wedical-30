@@ -117,6 +117,44 @@
                 });
             }
 
+            // data-istate-column
+            if (typeof table.data('istateColumn') === 'number') {
+                var istateColumn = table.data('istateColumn');
+                options.columnDefs.push({
+                    "targets": istateColumn,
+                    "render": function(data, type, row, meta) {
+                        switch (data) {
+                            case 'open':
+                                return '<i class="fas fa-envelope"></i>';
+                            case 'accepted':
+                                return '<i class="fas fa-check text-success"></i>';
+                            case 'declined':
+                                return '<i class="fas fa-times text-danger"></i>';
+                        }
+                        return '';
+                    }
+                });
+            }
+
+            // data-gstate-column
+            if (typeof table.data('gstateColumn') === 'number') {
+                var gstateColumn = table.data('gstateColumn');
+                options.columnDefs.push({
+                    "targets": gstateColumn,
+                    "render": function(data, type, row, meta) {
+                        switch (data) {
+                            case 'invited':
+                                return '<i class="fas fa-envelope"></i>';
+                            case 'attending':
+                                return '<i class="fas fa-check text-success"></i>';
+                            case 'absent':
+                                return '<i class="fas fa-times text-danger"></i>';
+                        }
+                        return '';
+                    }
+                });
+            }
+
             // data-action-column
             if (typeof table.data('actionColumn') === 'number') {
                 var actionColumn = table.data('actionColumn');

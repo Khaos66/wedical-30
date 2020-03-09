@@ -21,9 +21,10 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const i18n = require('i18n');
 const config = require('./config');
-const { Auth } = require('./auth');
+const {
+    Auth
+} = require('./auth');
 const i18nExt = require('./extension/i18n-ext');
-var Guest = require('./models/guest');
 
 // ensure admin user
 Auth.setupRoles().then(Auth.setupAdmin);
@@ -50,7 +51,7 @@ app.use(helmet.contentSecurityPolicy({
         defaultSrc: ["'self'"],
         styleSrc: ["'self'", 'fonts.googleapis.com'],
         fontSrc: ["'self'", 'data:', 'fonts.gstatic.com'],
-        imgSrc: ["'self'", 'data:'],
+        imgSrc: ["'self'", 'data:', '*.googleusercontent.com'],
     }
 }));
 
@@ -129,6 +130,13 @@ app.use('/js/dataTables.bootstrap4.min.js',
 app.use('/js/dataTables.min.js',
     express.static(__dirname +
         '/node_modules/datatables.net/js/jquery.dataTables.min.js'));
+// toggle switches
+app.use('/js/bootstrap4-toggle.min.js',
+    express.static(__dirname +
+        '/node_modules/bootstrap4-toggle/js/bootstrap4-toggle.min.js'));
+app.use('/styles/bootstrap4-toggle.min.css',
+    express.static(__dirname +
+        '/node_modules/bootstrap4-toggle/css/bootstrap4-toggle.min.css'));
 
 // Authentication
 Auth.useAuthentication(app);
@@ -149,18 +157,21 @@ var i18nOptions = {
 i18n.configure(i18nOptions);
 
 // express helper for natively supported engines
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     if (req.path.indexOf('.') === -1) {
         // Save user locale to cookie
         if (req.query.lang && i18nOptions.locales.includes(req.query.lang)) {
-            res.cookie('lang', req.query.lang, { maxAge: 900000, httpOnly: true });
+            res.cookie('lang', req.query.lang, {
+                maxAge: 900000,
+                httpOnly: true
+            });
         }
         // Load a hierarchy of locales into i18n module
         i18nExt.configureHierarchy(__dirname + '/locales', req.path, i18nOptions);
 
         debug('forward locals to template engine');
         // i18n __()
-        res.locals.__ = res.__ = function() {
+        res.locals.__ = res.__ = function () {
             return i18n.__.apply(req, arguments);
         };
         // page title
@@ -171,19 +182,25 @@ app.use(function(req, res, next) {
         res.locals.session = req.session;
         // query
         res.locals.query = req.query;
+        // query
+        res.locals.user = req.user;
         // flash messages
         res.locals.successes = req.flash('success');
         res.locals.dangers = req.flash('danger');
         res.locals.warnings = req.flash('warning');
         res.locals.errors = req.flash('error');
-        if (Object.entries(res.locals.successes).length !== 0) { debug('successes: ' + res.locals.successes); }
-        if (Object.entries(res.locals.dangers).length !== 0) { debug('dangers: ' + res.locals.dangers); }
-        if (Object.entries(res.locals.warnings).length !== 0) { debug('warnings: ' + res.locals.warnings); }
-        if (Object.entries(res.locals.errors).length !== 0) { debug('errors: ' + res.locals.errors); }
-        // genders, ages, expectations
-        res.locals.genders = Guest.genders;
-        res.locals.ages = Guest.ages;
-        res.locals.expectations = Guest.expectations;
+        if (Object.entries(res.locals.successes).length !== 0) {
+            debug('successes: ' + res.locals.successes);
+        }
+        if (Object.entries(res.locals.dangers).length !== 0) {
+            debug('dangers: ' + res.locals.dangers);
+        }
+        if (Object.entries(res.locals.warnings).length !== 0) {
+            debug('warnings: ' + res.locals.warnings);
+        }
+        if (Object.entries(res.locals.errors).length !== 0) {
+            debug('errors: ' + res.locals.errors);
+        }
     }
     next();
 });
@@ -202,19 +219,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 // file uploads
 app.use(fileUpload({
     // 5MB Limit
-    limits: { fileSize: 5 * 1024 * 1024 },
+    limits: {
+        fileSize: 5 * 1024 * 1024
+    },
 }));
 
 // Use the controllers.
 app.use(require('./controllers'));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};

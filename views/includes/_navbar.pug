@@ -1,9 +1,22 @@
 mixin pagenav()
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light
-        span.navbar-brand Wedical
+    nav.navbar.navbar-expand-lg&attributes(attributes)
+        a.navbar-brand(href='/') Wedical
         button.navbar-toggler(type='button', data-toggle='collapse', data-target='#mainNavContent', aria-controls='mainNavContent', aria-expanded='false', aria-label='Toggle navigation')
             span.navbar-toggler-icon
         div.collapse.navbar-collapse.justify-content-end#mainNavContent
             ul.navbar-nav
                 li.nav-item
-                    a.nav-link(href='/logout')= __('Logout')
+                    for lang in locales
+                        a.mx-1(href=`?lang=${lang}`)
+                            img.btn-lang(src=`/img/locales/iconfinder_${lang}.png`)
+                if user
+                    li.nav-item
+                        a.mx-1(href='/profile')
+                            img.btn-lang.rounded-circle.bg-light(src=user.identity.picture || '/img/avatar.svg')
+                    li.nav-item
+                        a.btn.btn-secondary(href='/logout')= __('Logout')
+                else
+                    li.nav-item
+                        a.btn.btn-primary.mx-2(href='/invite')= __('Invite')
+                    li.nav-item
+                        a.btn.btn-secondary(href='/profile')= __('Login')

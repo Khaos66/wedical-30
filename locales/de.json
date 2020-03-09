@@ -1,6 +1,9 @@
 {
     "Error while sending request": "Fehler bei der Datenübertragung",
     "Invite": "Einladung",
+    "Login": "Anmelden",
+    "Continue with Google": "Weiter mit Google",
+    "Continue with Facebook": "Weiter mit Facebook",
     "If you got an invite please click here": "Wenn du eine Einladung erhalten hast, dann klicke hier",
     "Logout": "Ausloggen",
     "Manage": "Verwalten",
@@ -10,6 +13,7 @@
     "Add": "Hinzufügen",
     "Abort": "Abbruch",
     "Close": "Schließen",
+    "Cancel": "Abbruch",
     "Delete": "Löschen",
     "Save": "Speichern",
     "Full Name": "Voller Name",
@@ -47,5 +51,6 @@
     "Tickets": "Tickets",
     "Selected": "Ausgewählt",
     "Search...": "Suche...",
-    "Title": "Titel"
+    "Title": "Titel",
+    "State": "Status"
 }
