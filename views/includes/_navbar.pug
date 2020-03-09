@@ -1,6 +1,7 @@
 mixin pagenav()
     nav.navbar.navbar-expand-lg&attributes(attributes)
-        a.navbar-brand(href='/') Wedical
+        a.navbar-brand(href='/')
+            img(src='/img/logo30.png')
         button.navbar-toggler(type='button', data-toggle='collapse', data-target='#mainNavContent', aria-controls='mainNavContent', aria-expanded='false', aria-label='Toggle navigation')
             span.navbar-toggler-icon
         div.collapse.navbar-collapse.justify-content-end#mainNavContent
