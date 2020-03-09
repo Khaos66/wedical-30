@@ -5,6 +5,8 @@ const {
     Auth
 } = require('../auth');
 const csrf = require('csurf');
+var User = require('../models/user');
+var Guest = require('../models/guest');
 
 // CSRF
 var csrfProtection = csrf();
@@ -13,9 +15,12 @@ var csrfProtection = csrf();
 router.get('/',
     Auth.authenticate('/profile'),
     csrfProtection,
-    function (req, res) {
+    async function(req, res) {
+        let user = await User.findOne({ _id: req.user.identity._id });
+        let guest = await Guest.findOne({ _id: user.guestId });
         res.render('profile', {
-            csrfToken: req.csrfToken()
+            csrfToken: req.csrfToken(),
+            guest: guest
         });
     });
 
