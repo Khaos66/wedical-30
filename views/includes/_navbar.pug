@@ -6,10 +6,11 @@ mixin pagenav()
             span.navbar-toggler-icon
         div.collapse.navbar-collapse.justify-content-end#mainNavContent
             ul.navbar-nav
-                li.nav-item
-                    for lang in locales
-                        a.mx-1(href=`?lang=${lang}`)
-                            img.btn-lang(src=`/img/locales/iconfinder_${lang}.png`)
+                if locales
+                    li.nav-item
+                        for lang in locales
+                            a.mx-1(href=`?lang=${lang}`)
+                                img.btn-lang(src=`/img/locales/iconfinder_${lang}.png`)
                 if user
                     li.nav-item
                         a.mx-1(href='/profile')
