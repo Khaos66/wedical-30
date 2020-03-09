@@ -14,7 +14,6 @@
             var addFields = function() {
                 var group = template.clone(true);
                 var index = counter++;
-
                 var replaceIndex = function(element, attribute) {
                     if (element.attr(attribute)) {
                         element.attr(attribute, element.attr(attribute).replace('%s', index));

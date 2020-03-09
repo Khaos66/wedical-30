@@ -1,9 +1,58 @@
 extends main_layout.pug
 
 block content
-  div.container.bg-light.mt-2
-    div.row
-        div.col.text-center
-            h1.h1.mt-2 Profile
+  form(action="post")
+    div.container.bg-light.mt-2.p-4
+      div.row.mb-2
+        div.col-6.col-sm-4.col-md-3.col-lg-2
+          img.border.rounded-circle.border-dark(src=user.identity.picture)
+        div.col-6.col-sm-8.position-relative
+          h1.position-absolute.bottom-0= user.identity.name
 
+    div.container.bg-light.mt-2.px-4.pt-4
+      div.row
+        div.col-2
+          p.lead= __('Kontact')
+        div.col-12.col-md-8
+            div.form-group.row
+              label.col-sm-2.col-form-label(for='email')= __('Email')
+              div.col-sm-10
+                input.form-control(type='email', name='email', value=user.identity.email)
+            div.form-group.row
+              label.col-sm-2.col-form-label(for='phone')= __('Phone')
+              div.col-sm-10
+                input.form-control(type='tel', name='phone', value=user.identity.phone)
 
+    div.container.bg-light.mt-2.px-4.pt-4
+      div.row
+        div.col-2
+          p.lead= __('Allergies & Diets')
+        div.col-12.col-md-8
+          div.endlessInput(data-input-template='#allergieTemplate', data-start-index=guest.allergy.length + 1)
+            div.form-group.row.collapse#allergieTemplate
+              label.col-sm-2.col-form-label
+                span.h4
+                  i.fas.fa-allergies.fa-pull-right
+              div.col-sm-10
+                input.form-control(type='text', name='allergy%s', placeholder=__('%s. Allergy'))
+            each allergy,index in guest.allergy
+              div.form-group.row
+                label.col-sm-2.col-form-label
+                  span.h4
+                    i.fas.fa-allergies.fa-pull-right
+                div.col-sm-10
+                  input.form-control(type='text', name=`allergy${index+1}`, value=allergy, placeholder=__(`{{no}}. Allergy`, {no: index + 1}))
+          div.endlessInput(data-input-template='#dietTemplate', data-start-index=guest.diet.length + 1)
+            div.form-group.row.collapse#dietTemplate
+              label.col-sm-2.col-form-label
+                span.h4
+                  i.fas.fa-utensils.fa-pull-right
+              div.col-sm-10
+                input.form-control(type='text', name='diet%s', placeholder=__('%s. Diet'))
+            each diet,index in guest.diet
+              div.form-group.row
+                label.col-sm-2.col-form-label
+                  span.h4
+                    i.fas.fa-utensils.fa-pull-right
+                div.col-sm-10
+                  input.form-control(type='text', name=`diet${index+1}`, value=diet, placeholder=__(`{{no}}. Diet`, {no: index + 1}))
