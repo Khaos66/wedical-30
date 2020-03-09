@@ -12,7 +12,7 @@ mixin pagenav()
                 if user
                     li.nav-item
                         a.mx-1(href='/profile')
-                            img.btn-lang.rounded-circle(src=user.identity.picture)
+                            img.btn-lang.rounded-circle.bg-light(src=user.identity.picture || '/img/avatar.svg')
                     li.nav-item
                         a.btn.btn-secondary(href='/logout')= __('Logout')
                 else

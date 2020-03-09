@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 var User = require('../models/user');
+var Guest = require('../models/guest');
 
 router.get('/success',
     passport.authenticate('session'),
@@ -30,6 +31,13 @@ router.get('/success',
             user.guestId = req.session.guestid;
             req.session.guestid = '';
             await user.save();
+
+            // assign email
+            let guest = await Guest.findOne({
+                _id: user.guestId
+            });
+            guest.email = user.email;
+            await guest.save();
         }
 
         let redirect_url = req.session.redirect_url || '/profile';
