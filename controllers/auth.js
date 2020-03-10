@@ -22,6 +22,9 @@ router.get('/success',
         // Check if invited. Else delete.
         let guestid = req.session.guestid;
         req.session.guestid = '';
+        let redirect_url = req.session.redirect_url || '/profile';
+        req.session.redirect_url = '';
+
         if (!guestid) {
             if (!user.guestId) {
                 req.logout();
@@ -31,17 +34,17 @@ router.get('/success',
         } else {
             // Assign guestId
             user.guestId = guestid;
-            let result = await user.save();
+            await user.save();
 
             // assign email
             let guest = await Guest.findOne({
                 _id: guestid
             });
             guest.email = user.email;
-            result = await guest.save();
+            guest.userId = user._id;
+            await guest.save();
         }
 
-        let redirect_url = req.session.redirect_url || '/profile';
         return res.redirect(redirect_url);
     });
 

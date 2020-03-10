@@ -42,48 +42,48 @@ div.container.bg-light.mt-2
                 |
                 |
                 | 5.4.2020 open end
-
-div.container.bg-light.mt-2
-    div.row
-        div.col.text-center.mt-4.mb-2
-            h2.text-uppercase= __('Register now')
-    div.row
-        div.col.col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4.mb-2
-            a.btn.btn-outline-dark.w-100.d-flex(href='/auth2/google')
-                span.gicon.fa-pull-left
-                span.align-self-center.ml-2= __('Continue with Google')
-    div.row
-        div.col.col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4.mb-2
-            a.btn.btn-outline-light.bg-primary.text-white.w-100.d-flex(href='/auth2/facebook')
-                span.fbicon.gicon.fa-pull-left
-                span.align-self-center.ml-2= __('Continue with Facebook')
-    div.row.d-flex.my-3
-        div.col-2.col-sm-3.offset-2.align-self-center.w-100
-            div.border-top.border-dark
-        div.col-4.col-sm-2.text-center
-            span= __('or sign up here')
-        div.col-2.col-sm-3.align-self-center.w-100
-            div.border-top.border-dark
-    div.row
-        div.col.col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4.mb-4
-            form.ajaxForm.needs-validation(method='post', data-error='#registerFormError')
-                input(type='hidden', name='_csrf' value=csrfToken)
-                div.row.input-group.mx-0.my-1
-                    div.input-group-prepend
-                        div.input-group-text
-                            i.fas.fa-at
-                    input.form-control(type='email', name='email', placeholder=__('Email address'), value= guest.email)
-                div.row.input-group.mx-0.my-1
-                    div.input-group-prepend
-                        div.input-group-text
-                            i.fas.fa-key
-                    input.form-control(type='password', name='password', placeholder=__('Password'))
-                div.row.input-group.mx-0.my-1
-                    div.input-group-prepend
-                        div.input-group-text
-                            i.fas.fa-redo
-                    input.form-control(type='password', name='password2', placeholder=__('Reenter Password'))
-                div.row
-                    div.alert.alert-danger.w-100.collapse(id='registerFormError') Error
-                div.row.my-1.mx-1
-                    button.btn.btn-primary.w-100(type='submit')= __('Sign up')
+if !guest.userId
+    div.container.bg-light.mt-2
+        div.row
+            div.col.text-center.mt-4.mb-2
+                h2.text-uppercase= __('Register now')
+        div.row
+            div.col.col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4.mb-2
+                a.btn.btn-outline-dark.w-100.d-flex(href='/auth2/google')
+                    span.gicon.fa-pull-left
+                    span.align-self-center.ml-2= __('Continue with Google')
+        div.row
+            div.col.col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4.mb-2
+                a.btn.btn-outline-light.bg-primary.text-white.w-100.d-flex(href='/auth2/facebook')
+                    span.fbicon.gicon.fa-pull-left
+                    span.align-self-center.ml-2= __('Continue with Facebook')
+        div.row.d-flex.my-3
+            div.col-2.col-sm-3.offset-2.align-self-center.w-100
+                div.border-top.border-dark
+            div.col-4.col-sm-2.text-center
+                span= __('or sign up here')
+            div.col-2.col-sm-3.align-self-center.w-100
+                div.border-top.border-dark
+        div.row
+            div.col.col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4.mb-4
+                form.ajaxForm.needs-validation(method='post', data-error='#registerFormError')
+                    input(type='hidden', name='_csrf' value=csrfToken)
+                    div.row.input-group.mx-0.my-1
+                        div.input-group-prepend
+                            div.input-group-text
+                                i.fas.fa-at
+                        input.form-control(type='email', name='email', placeholder=__('Email address'), value= guest.email)
+                    div.row.input-group.mx-0.my-1
+                        div.input-group-prepend
+                            div.input-group-text
+                                i.fas.fa-key
+                        input.form-control(type='password', name='password', placeholder=__('Password'))
+                    div.row.input-group.mx-0.my-1
+                        div.input-group-prepend
+                            div.input-group-text
+                                i.fas.fa-redo
+                        input.form-control(type='password', name='password2', placeholder=__('Reenter Password'))
+                    div.row
+                        div.alert.alert-danger.w-100.collapse(id='registerFormError') Error
+                    div.row.my-1.mx-1
+                        button.btn.btn-primary.w-100(type='submit')= __('Sign up')

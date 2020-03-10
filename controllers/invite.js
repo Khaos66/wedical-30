@@ -106,9 +106,12 @@ router.get('/:token/register/:utoken', csrfProtection, async function (req, res)
         return result.status(404).end();
     }
 
-    req.session.guestid = guest._id;
-    // For redirect after social login
-    req.session.redirect_url = '/profile';
+    // check if already registered
+    if (!guest.userId) {
+        req.session.guestid = guest._id;
+        // For redirect after social login
+        req.session.redirect_url = '/profile';
+    }
 
     res.render('invite/register.pug', {
         csrfToken: req.csrfToken(),
@@ -170,6 +173,7 @@ router.post('/:token/register/:utoken',
 
         // Update email in guest
         guest.email = req.body[`email`];
+        guest.userId = user._id;
         await guest.save();
 
         // login as the new user
