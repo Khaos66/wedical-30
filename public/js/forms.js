@@ -225,6 +225,11 @@
                 form.find('input:not([type="checkbox"]):not([type="hidden"]):not([type="radio"])').val('');
                 form.find('input[type="radio"]').closest('label').removeClass('active');
                 form.find('input[type="checkbox"]').prop('checked', false);
+                // reset quickseach selects
+                form.find('select.quickMultiSelect').each(function () {
+                    this.multiSelect.qs1.reset();
+                });
+
                 // load data
                 $.ajax({
                     headers: {
@@ -242,8 +247,8 @@
                                 if (key === 'auth' || key === 'roles') {
                                     continue;
                                 }
-                                if (Array.isArray(value)) {
-                                    var container = form.find(`[name='${key}1']`).closest('.endlessInputEnabled');
+                                var container = form.find(`[name='${key}1']`).closest('.endlessInputEnabled');
+                                if (Array.isArray(value) && container.length > 0) {
                                     if (container.length < 1) {
                                         continue;
                                     }
@@ -335,6 +340,7 @@
      */
     $.fn.quickMultiSelect = function () {
         return this.each(function () {
+            var otherThat = this;
             var select = $(this);
             var leftHeader = select.data('leftHeader') || 'Available';
             var rightHeader = select.data('rightHeader') || 'Active';
@@ -344,6 +350,7 @@
                 selectionHeader: `<p class="h5">${rightHeader}</p><div><input type='text' class='list-search-input' autocomplete='off' placeholder='${placeholder}' novalidate></div>`,
                 cssClass: "list-form-control",
                 afterInit: function (ms) {
+                    otherThat.multiSelect = this;
                     var that = this,
                         $selectableSearch = that.$selectableUl.prev().children('input'),
                         $selectionSearch = that.$selectionUl.prev().children('input'),
@@ -363,6 +370,8 @@
                                 return false;
                             }
                         });
+                    console.log(that);
+                    console.log(that.qs1);
                 },
                 afterSelect: function () {
                     this.qs1.cache();
