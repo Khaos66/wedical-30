@@ -1,18 +1,48 @@
 div.container.bg-light.mt-2
   div.row
     div.col.text-center
-      h1.h1.my-4 PARTY PARTY PARTY
+      h1.h1.my-4= __('Benny wird 30')
   div.row
     div.col.bg-warning.text-center
       h2.mt-4= guest.name
       h4.mb-4= __('You\'re invited to the party')
-  div.row.m-4.pb-4
+  div.row.mr-4.py-4
     div.col.text-center
       h2.text-uppercase= __('Stay informed')
       p= __('Recieve the latest information about the schedule and location of the event')
     div.col.text-center
       h2.text-uppercase= __('Stay connected')
       p= __('Connect with other guests and share a combined experience')
+      p
+        small= __('(not implemented jet)')
+  div.row
+    div.col.bg-info.text-center.text-light
+      h2.mt-4 Event-Infos
+      h4.mb-4
+        p
+            i.fas.fa-map-marker-alt.text-danger
+            |
+            |
+            | Sulzbacher Str. 7, 71579 Spiegelberg (Gemeindehalle Jux)
+        p
+            strong
+                i.fas.fa-calendar-alt.text-dark
+                |
+                |
+                | 4.4.2020
+                |
+                |
+                i.fas.fa-clock.text-dark
+                |
+                |
+                | 19:00
+        p
+            strong
+                i.fas.fa-flag-checkered.text-dark
+                |
+                |
+                | 5.4.2020 open end
+
 div.container.bg-light.mt-2
     div.row
         div.col.text-center.mt-4.mb-2
