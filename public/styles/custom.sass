@@ -64,3 +64,50 @@ body.invite
     @media (min-width: 992px)
       background-position-x: 650px;
 
+.bg-console
+  background-color: black
+  border: 1px solid white
+  font-family: 'Consolas'
+  color: #66ff33
+
+form.invite-code
+  width: 100%
+
+  .input-group
+    width: 100%
+
+  .form-control
+    border-radius: 0
+    background-color: black
+    color: #66ff33
+
+  .input-group-append button
+    border-radius: 0
+    border-color: #33cc33
+    background-color: #66ff33
+    color: black
+
+@keyframes typing
+  from
+    width: 0
+  to
+    width: 100%
+
+.typewriter h2, .typewriter p
+  overflow: hidden
+  white-space: nowrap
+  letter-spacing: .1em
+  width: 0
+  animation: typing 1s steps(23, end) forwards
+
+.animated.delay-6s
+  -webkit-animation-delay: 6s
+  animation-delay: 6s
+
+.animated.delay-7s
+  -webkit-animation-delay: 7s
+  animation-delay: 7s
+
+.animated.delay-8s
+  -webkit-animation-delay: 8s
+  animation-delay: 8s

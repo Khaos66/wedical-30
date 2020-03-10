@@ -1,34 +1,40 @@
 include ../invite/_inviteBtns.pug
 
-div.container.bg-light.mt-2
+div.container.mt-4
   div.row
-    div.col
-      h1.h1.mt-4 Hi #{invite.title}
-      p= __('You have been invited to the party! =)')
-      div.container.m-2
-        div.row
-          div.col
-            +acceptBtn.btn.btn-outline-success.btn-lg.w-100.btn-jumbo
-          div.col
-            a(href='#', data-toggle='modal', data-target="#declideModal").btn.btn-outline-danger.btn-lg.w-100.btn-jumbo= __('Decline')
-            div.modal.fade(role='dialog', tabindex='-1', id='declideModal')
-              div.modal-dialog(role='document')
-                  div.modal-content.bg-danger.text-white
-                      div.modal-header
-                          h5.modal-title= __('Decline invitation')
-                          button.close(type='button', data-dismiss='modal', aria-label=__('Close'))
-                              span.text-white(aria-hidden='true') &times;
-                      div.modal-body
-                        p= __('You are about to decline this invitation.')
-                        p= __('Notice that there is no way back!')
-                        if invite.guests.length > 1
-                          p
-                            i.fas.fa-exclamation-triangle
-                            |
-                            |
-                            strong= __('If some of you will come, please accept the invitation and change the attendance status of the guests.')
-                      div.modal-footer
-                          +declineBtn.btn.btn-outline-warning.font-weight-bold
-                          button.btn.btn-outline-light.font-weight-bold(type='button', data-dismiss='modal')= __('Cancel')
+    div.col.text-center
+      h1.text-monospace Hi #{invite.title}
+
+//-
+  div.container.bg-light.mt-2
+    div.row
+      div.col
+        h1.h1.mt-4 Hi #{invite.title}
+        p= __('You have been invited to the party! =)')
+        div.container.m-2
+          div.row
+            div.col
+              +acceptBtn.btn.btn-outline-success.btn-lg.w-100.btn-jumbo
+            div.col
+              a(href='#', data-toggle='modal', data-target="#declideModal").btn.btn-outline-danger.btn-lg.w-100.btn-jumbo= __('Decline')
+              div.modal.fade(role='dialog', tabindex='-1', id='declideModal')
+                div.modal-dialog(role='document')
+                    div.modal-content.bg-danger.text-white
+                        div.modal-header
+                            h5.modal-title= __('Decline invitation')
+                            button.close(type='button', data-dismiss='modal', aria-label=__('Close'))
+                                span.text-white(aria-hidden='true') &times;
+                        div.modal-body
+                          p= __('You are about to decline this invitation.')
+                          p= __('Notice that there is no way back!')
+                          if invite.guests.length > 1
+                            p
+                              i.fas.fa-exclamation-triangle
+                              |
+                              |
+                              strong= __('If some of you will come, please accept the invitation and change the attendance status of the guests.')
+                        div.modal-footer
+                            +declineBtn.btn.btn-outline-warning.font-weight-bold
+                            button.btn.btn-outline-light.font-weight-bold(type='button', data-dismiss='modal')= __('Cancel')
 
 

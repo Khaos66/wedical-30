@@ -38,5 +38,8 @@
     "This link is only for this guest": "Dieser Link ist nur für diesen Gast bestimmt",
     "Allergies & Diet": "Allergien & Diäten",
     "%s. Allergy": "%s. Allergie",
-    "%s. Diet": "%s. Diät"
+    "%s. Diet": "%s. Diät",
+    "> Access Code required!": "> Zugangscode benötigt!",
+    "> Please provide the code": "> Bitte gib den Code von",
+    "from your invitation:": "deiner Einladung ein:"
 }

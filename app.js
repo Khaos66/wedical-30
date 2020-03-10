@@ -137,6 +137,10 @@ app.use('/js/bootstrap4-toggle.min.js',
 app.use('/styles/bootstrap4-toggle.min.css',
     express.static(__dirname +
         '/node_modules/bootstrap4-toggle/css/bootstrap4-toggle.min.css'));
+// Animate.css
+app.use('/styles/animate.min.css',
+    express.static(__dirname +
+        '/node_modules/animate.css/animate.min.css'));
 
 // Authentication
 Auth.useAuthentication(app);
