@@ -20,30 +20,37 @@ router.get('/success',
         }
 
         // Check if invited. Else delete.
-        if (!req.session.guestid) {
+        let guestid = req.session.guestid;
+        req.session.guestid = '';
+
+        let log = 'guestid: ' + guestid;
+
+        if (!guestid) {
             if (!user.guestId) {
                 req.logout();
                 await user.remove();
                 return res.status(403).end('You don\'t seem to be invited!');
             }
         } else {
+            log += '. Upd User';
+
             // Assign guestId
-            user.guestId = req.session.guestid;
+            user.guestId = guestid;
             await user.save();
 
+            log += '. Upd Guest';
             // assign email
             let guest = await Guest.findOne({
-                _id: user.guestId
+                _id: guestid
             });
             guest.email = user.email;
             await guest.save();
         }
 
-        let redirect_url = req.session.redirect_url || '/profile';
 
-        // reset guest id at the end
-        req.session.guestid = '';
-        res.redirect(redirect_url);
+        return res.end(log);
+        let redirect_url = req.session.redirect_url || '/profile';
+        return res.redirect(redirect_url);
     });
 
 // Google
