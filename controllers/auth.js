@@ -26,8 +26,6 @@ router.get('/success',
             return res.status(403).end('You don\'t seem to be invited!');
         }
 
-        return res.end('guestid: ' + req.session.guestid);
-
         // Assign guestId
         if (req.session.guestid) {
             user.guestId = req.session.guestid;
