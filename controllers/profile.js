@@ -130,6 +130,17 @@ router.post('/avatar',
 
             // load image and resize
             let img = await Image.load(req.files.avatar.data);
+            // Cut out square
+            if (img.width != img.height) {
+                let shortEdge = Math.min(img.width, img.height);
+                img = img.crop({
+                    width: shortEdge,
+                    height: shortEdge,
+                    x: Math.floor((img.width - shortEdge) / 2),
+                    y: Math.floor((img.height - shortEdge) / 2),
+                });
+            }
+            // Resize to save storage
             if (img.width > 200) {
                 img = img.resize({
                     width: 200
