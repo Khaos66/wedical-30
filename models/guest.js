@@ -80,6 +80,14 @@ class Guest extends Model {
         this.token = customUtils.uid(6);
         this.state = 'attending';
     }
+
+    /**
+     *
+     */
+    setInvited() {
+        this.token = customUtils.uid(6);
+        this.state = 'invited';
+    }
 }
 
 Guest.use(Timestamps);

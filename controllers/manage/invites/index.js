@@ -83,7 +83,7 @@ async function addInvite(req, res) {
 			_id: removeGuest
 		});
 		if (!guest.state || guest.state === '') {
-			guest.setAttending();
+			guest.setInvited();
 			await guest.save();
 		}
 	}
@@ -130,7 +130,7 @@ async function putInvite(req, res) {
 							_id: addGuest
 						});
 						if (!guest.state || guest.state === '') {
-							guest.state = 'invited';
+							guest.setInvited();
 							await guest.save();
 						}
 					}
