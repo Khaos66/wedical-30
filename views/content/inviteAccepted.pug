@@ -30,6 +30,7 @@ div.container.bg-light.mt-4.p-4
                 id=`comming_${guest._id}`
                 checked=(guest.state === 'attending')
                 data-height="28"
+                data-width="160"
                 data-change-api=`/invite/${invite.token}/gstate/${guest._id}`
                 data-toggle='toggle'
                 data-on=__('Coming')
