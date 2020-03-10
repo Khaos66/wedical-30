@@ -1,5 +1,18 @@
-div.container.bg-light.mt-2
+
+div.container.my-4
   div.row
-    div.col
-      h1.h1.mt-4 Hi #{invite.title}
-      p= __('So sad you can\'t make it =(')
+    div.col.text-center
+      h1.text-warning.animated.pulse Hi #{invite.title}
+
+  div.row.my-4
+    div.col.text-light.text-center.display-1
+      i.fas.fa-frown
+
+  div.row.my-4
+    div.col.text-center
+      div.alert.alert-warning
+        p= __('So sad you can\'t make it')
+        p
+          strong= __('Maybe we\'ll see you on our wedding party in august')
+        p
+          small= __('The invitations havn\'t been send out jet...')
