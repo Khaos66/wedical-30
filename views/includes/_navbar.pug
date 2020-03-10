@@ -11,7 +11,7 @@ mixin pagenav()
                         for lang in locales
                             a.mx-1(href=`?lang=${lang}`)
                                 img.btn-lang(src=`/img/locales/iconfinder_${lang}.png`)
-                if user
+                if user && user.identity
                     li.nav-item
                         a.mx-1(href='/profile')
                             img.btn-lang.rounded-circle.bg-light(src=user.identity.picture || '/img/avatar.svg')
