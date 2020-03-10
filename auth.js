@@ -220,7 +220,7 @@ class Auth {
                     clientID: config.authProviders.facebook.appID,
                     clientSecret: config.authProviders.facebook.appSecret,
                     callbackURL: `${config.baseUrl}auth2/facebook/callback`,
-                    profileFields: ['id', 'emails', 'name', 'picture.type(small)']
+                    profileFields: ['id', 'emails', 'name', 'picture.type(large)']
                 },
                 async function (accessToken, refreshToken, profile, done) {
                     let user = await User.findOne({
