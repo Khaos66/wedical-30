@@ -20,14 +20,14 @@ router.get('/success',
         }
 
         // Check if invited. Else delete.
-        if (!req.session.guestid && !user.guestId) {
-            req.logout();
-            await user.remove();
-            return res.status(403).end('You don\'t seem to be invited!');
-        }
-
-        // Assign guestId
-        if (req.session.guestid) {
+        if (!req.session.guestid) {
+            if (!user.guestId) {
+                req.logout();
+                await user.remove();
+                return res.status(403).end('You don\'t seem to be invited!');
+            }
+        } else {
+            // Assign guestId
             user.guestId = req.session.guestid;
             await user.save();
 
