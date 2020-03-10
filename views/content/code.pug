@@ -1,9 +1,21 @@
 include ../invite/_inviteCode.pug
 
-div.container.bg-light.mt-2
-  div.row
-    div.col.text-center
-      h1.h1.mt-2 PARTY PARTY PARTY
-      p= __('If you recieved an invite, please enter the Code below')
-      div.m-4.d-inline-block
+div.container.mt-4.p-4
+  div.row.bg-console.mx-1
+    div.col
+      div
+        h1.mt-2 Running:
+      div.typewriter
+        h2.mt-2 BennyGets30.sh
+      div.typewriter
+        p.animated.delay-1s= __('> Initializing...')
+        p.animated.delay-2s= __('> Loading BIG party...')
+        p.animated.delay-3s= __('> Activating mode: Guest')
+        p.animated.delay-4s= __('> Accessing details...')
+        p.animated.delay-5s.text-danger= __('> Access Code required!')
+        p.animated.delay-6s
+          strong= __('> Please provide the code')
+        p.animated.delay-7s
+          strong= __('from your invitation:')
+      div.mt-4.mb-2.animated.delay-8s.bounceIn
         +codeForm
