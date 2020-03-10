@@ -32,19 +32,21 @@ router.get('/success',
                 return res.status(403).end('You don\'t seem to be invited!');
             }
         } else {
-            log += '. Upd User';
+            log += '. Upd User: ' + user._id;
 
             // Assign guestId
             user.guestId = guestid;
-            await user.save();
+            let result = await user.save();
+            log += ' => ' + result;
 
-            log += '. Upd Guest';
+            log += '. Upd Guest: ' + guest._id;
             // assign email
             let guest = await Guest.findOne({
                 _id: guestid
             });
             guest.email = user.email;
-            await guest.save();
+            result = await guest.save();
+            log += ' => ' + result;
         }
 
 
