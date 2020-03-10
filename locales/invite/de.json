@@ -20,7 +20,7 @@
     "Notice that there is no way back!": "Von hier gibt es kein zurück!",
     "If some of you will come, please accept the invitation and change the attendance status of the guests.": "Wenn nur ein Teil von euch nicht kommt, dann sagt bitte zu und ändert den Zusage-Status jeder Person.",
     "So sad you can't make it =(": "Schade, dass du absagen musstest =(",
-    "You're in, {{title}}!": "Du bist dabei, {{title}}!",
+    "You're in, {{title}}!": "Danke für die Zusage, {{title}}!",
     "Please take 5 more minutes to help us organize this event.": "Bitte nimm dir 5 Minuten, um uns bei der Planung zu helfen.",
     "Who's coming?": "Wer kommt?",
     "Coming": "Kommt",
@@ -52,5 +52,6 @@
     "Are you coming?": "Wie siehts aus?",
     "So sad you can't make it": "Schade, dass du absagen musstest",
     "Maybe we'll see you on our wedding party in august": "Aber evtl. sehen wir uns ja zu unserer Hochzeitsfeier Ende August",
-    "The invitations havn't been send out jet...": "Die Einladungen dafür sind auch noch nicht raus..."
+    "The invitations havn't been send out jet...": "Die Einladungen dafür sind auch noch nicht raus...",
+    "(not implemented jet)": "(noch nicht fertig implementiert)"
 }
