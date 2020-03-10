@@ -11,6 +11,7 @@ var Guest = require('../models/guest');
 var User = require('../models/user');
 var Role = require('../models/role');
 const sendmail = require('../mailer');
+const config = require('../config');
 
 // CSRF
 var csrfProtection = csrf();
@@ -230,6 +231,7 @@ router.get('/:token', csrfProtection, async function (req, res) {
         csrfToken: req.csrfToken(),
         invite: invite,
         address: address,
+        gmapsKey: config.gmaps.key,
         guests: guests.map(guest => invite.addInviteLink(guest)),
     });
 });
