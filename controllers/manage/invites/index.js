@@ -80,7 +80,7 @@ async function addInvite(req, res) {
         var guest = await Guest.findOne({
             _id: removeGuest
         });
-        if (guest.state === '') {
+        if (!guest.state || guest.state === '') {
             guest.setAttending();
             await guest.save();
         }
