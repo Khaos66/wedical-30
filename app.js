@@ -48,7 +48,7 @@ app.use(bodyParser.urlencoded({
 // use helmet for protection
 app.use(helmet.contentSecurityPolicy({
     directives: {
-        defaultSrc: ["'self'"],
+        defaultSrc: ["'self'", 'www.google.com'],
         styleSrc: ["'self'", 'fonts.googleapis.com'],
         fontSrc: ["'self'", 'data:', 'fonts.gstatic.com'],
         imgSrc: ["'self'", 'data:', '*.googleusercontent.com'],
@@ -141,6 +141,11 @@ app.use('/styles/bootstrap4-toggle.min.css',
 app.use('/styles/animate.min.css',
     express.static(__dirname +
         '/node_modules/animate.css/animate.min.css'));
+// AniView
+app.use('/js/jquery.aniview.js',
+    express.static(__dirname +
+        '/node_modules/jquery-aniview/dist/jquery.aniview.js'));
+
 
 // Authentication
 Auth.useAuthentication(app);
