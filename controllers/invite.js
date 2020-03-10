@@ -10,8 +10,11 @@ var Invite = require('../models/invite');
 var Guest = require('../models/guest');
 var User = require('../models/user');
 var Role = require('../models/role');
-const sendmail = require('../mailer');
-const config = require('../config');
+const sendmail = require('../mailer'); <<
+<< << < HEAD
+const config = require('../config'); ===
+=== = >>>
+>>> > b7ba9777fbe9f1f2b6f090e2ac3fec00f0d77eeb
 
 // CSRF
 var csrfProtection = csrf();
