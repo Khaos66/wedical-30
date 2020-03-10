@@ -218,10 +218,18 @@ router.get('/:token', csrfProtection, async function (req, res) {
         }
     });
 
+    let address = '';
+    for (let guest of guests) {
+        if (!address) {
+            address = guest.address;
+        }
+    }
+
     res.render(`invite/${invite.state}.pug`, {
         bodyClass: 'invite',
         csrfToken: req.csrfToken(),
         invite: invite,
+        address: address,
         guests: guests.map(guest => invite.addInviteLink(guest)),
     });
 });

@@ -1,6 +1,6 @@
 ;
 // load eruda
-(function() {
+(function () {
     var src = '/js/eruda.js';
     if (!/eruda=true/.test(window.location) &&
         localStorage.getItem('active-eruda') != 'true') return;
@@ -13,7 +13,7 @@
 })();
 
 // init
-(function($) {
+(function ($) {
     // tooltips
     $('[data-toggle="tooltip"]').not('.lazy-tooltip').tooltip();
     // tooltips in modals
@@ -49,12 +49,18 @@
     $('[data-copy-target]').copyToClipboard();
 
     // Radio toggles
-    $('input[data-toggle="radio"][data-target]').each(function() {
+    $('input[data-toggle="radio"][data-target]').each(function () {
         var input = $(this);
         var selector = input.data('target');
-        input.change(function() {
+        input.change(function () {
             $(selector).collapse('toggle');
         });
+    });
+
+    // AniView
+    $('.aniview').AniView({
+        animateThreshold: 100,
+        scrollPollInterval: 20
     });
 })(jQuery);
 
@@ -68,11 +74,15 @@ function setCSRF(token) {
 
 function handleCSRF(jqXHR) {
     var csrf = jqXHR.getResponseHeader('CSRF-Token');
-    if (csrf) { setCSRF(csrf); }
+    if (csrf) {
+        setCSRF(csrf);
+    }
 }
 
 function showElement(selector) {
-    if (selector) { $(selector).show(); }
+    if (selector) {
+        $(selector).show();
+    }
 }
 
 function handleModalSuccess(element) {
@@ -80,7 +90,7 @@ function handleModalSuccess(element) {
         $(element.data('modal')).modal('hide');
     }
     if (element.data('redrawTable')) {
-        $(element.data('redrawTable')).each(function() {
+        $(element.data('redrawTable')).each(function () {
             this.reloadTable();
         });
     }
