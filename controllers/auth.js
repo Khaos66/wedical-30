@@ -29,7 +29,6 @@ router.get('/success',
         // Assign guestId
         if (req.session.guestid) {
             user.guestId = req.session.guestid;
-            req.session.guestid = '';
             await user.save();
 
             // assign email
@@ -42,6 +41,8 @@ router.get('/success',
 
         let redirect_url = req.session.redirect_url || '/profile';
 
+        // reset guest id at the end
+        req.session.guestid = '';
         res.redirect(redirect_url);
     });
 
