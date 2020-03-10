@@ -56,7 +56,7 @@ router.get('/google/callback',
         failureRedirect: '/login'
     }),
     function (req, res) {
-        res.redirect('/auth/success');
+        res.redirect('/auth2/success');
     });
 
 // Facebook
@@ -69,7 +69,7 @@ router.get('/facebook/callback',
         failureRedirect: '/login'
     }),
     function (req, res) {
-        res.redirect('/auth/success');
+        res.redirect('/auth2/success');
     });
 
 module.exports = router;

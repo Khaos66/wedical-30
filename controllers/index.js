@@ -10,7 +10,7 @@ router.use('/manage', require('./manage'));
 // load login/logout route
 router.use('/login', require('./login'));
 router.use('/logout', require('./logout'));
-router.use('/auth', require('./auth'));
+router.use('/auth2', require('./auth'));
 
 router.use('/profile', require('./profile'));
 

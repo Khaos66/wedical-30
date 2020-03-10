@@ -188,7 +188,7 @@ class Auth {
             passport.use(new GoogleStrategy({
                     clientID: config.authProviders.google.clientID,
                     clientSecret: config.authProviders.google.clientSecret,
-                    callbackURL: `${config.baseUrl}auth/google/callback`
+                    callbackURL: `${config.baseUrl}auth2/google/callback`
                 },
                 async function (accessToken, refreshToken, profile, done) {
                     let user = await User.findOne({
@@ -219,7 +219,7 @@ class Auth {
             passport.use(new FacebookStrategy({
                     clientID: config.authProviders.facebook.appID,
                     clientSecret: config.authProviders.facebook.appSecret,
-                    callbackURL: `${config.baseUrl}auth/facebook/callback`,
+                    callbackURL: `${config.baseUrl}auth2/facebook/callback`,
                     profileFields: ['id', 'emails', 'name', 'picture.type(small)']
                 },
                 async function (accessToken, refreshToken, profile, done) {
