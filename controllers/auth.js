@@ -22,9 +22,6 @@ router.get('/success',
         // Check if invited. Else delete.
         let guestid = req.session.guestid;
         req.session.guestid = '';
-
-        let log = 'guestid: ' + guestid;
-
         if (!guestid) {
             if (!user.guestId) {
                 req.logout();
@@ -32,25 +29,18 @@ router.get('/success',
                 return res.status(403).end('You don\'t seem to be invited!');
             }
         } else {
-            log += '. Upd User: ' + user._id;
-
             // Assign guestId
             user.guestId = guestid;
             let result = await user.save();
-            log += ' => ' + result.guestId;
 
-            log += '. Upd Guest: ' + guest._id;
             // assign email
             let guest = await Guest.findOne({
                 _id: guestid
             });
             guest.email = user.email;
             result = await guest.save();
-            log += ' => ' + result.email;
         }
 
-
-        return res.end(log);
         let redirect_url = req.session.redirect_url || '/profile';
         return res.redirect(redirect_url);
     });
