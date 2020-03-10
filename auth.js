@@ -233,7 +233,7 @@ class Auth {
                         user = await User.create({
                             facebookId: profile.id,
                             strategy: Strategies.FACEBOOK,
-                            name: profile.displayName,
+                            name: `${profile.name.givenName} ${profile.name.familyName}`,
                             email: profile.emails[0].value,
                             picture: profile.photos.length > 0 ? profile.photos[0].value : '',
                             roles: [guestRole._id]

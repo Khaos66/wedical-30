@@ -51,7 +51,7 @@ app.use(helmet.contentSecurityPolicy({
         defaultSrc: ["'self'", 'www.google.com'],
         styleSrc: ["'self'", 'fonts.googleapis.com'],
         fontSrc: ["'self'", 'data:', 'fonts.gstatic.com'],
-        imgSrc: ["'self'", 'data:', '*.googleusercontent.com'],
+        imgSrc: ["'self'", 'data:', '*.googleusercontent.com', 'platform-lookaside.fbsbx.com'],
     }
 }));
 
