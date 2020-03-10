@@ -64,9 +64,9 @@ div.container.my-4
             | Sulzbacher Str. 7, 71579 Spiegelberg
           div
             if address
-              iframe.w-100(height="300" frameborder="0" style="border:0" src=`https://www.google.com/maps/embed/v1/directions?origin=${encodeURI(address)}&destination=Gemeindehalle%20Jux&key=AIzaSyCqrXJddjAX88t4ugqnz6rAnx6edLePWwI` allowfullscreen)
+              iframe.w-100(height="300" frameborder="0" style="border:0" src=`https://www.google.com/maps/embed/v1/directions?origin=${encodeURI(address)}&destination=Gemeindehalle%20Jux&key=${gmapsKey}` allowfullscreen)
             else
-              iframe.w-100(height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=Gemeindehalle%20Jux&key=AIzaSyCqrXJddjAX88t4ugqnz6rAnx6edLePWwI" allowfullscreen)
+              iframe.w-100(height="300" frameborder="0" style="border:0" src=`https://www.google.com/maps/embed/v1/place?q=Gemeindehalle%20Jux&key=${gmapsKey}` allowfullscreen)
     div.col-4
 
   div.row.mt-4.aniview(data-av-animation="slideInRight")
