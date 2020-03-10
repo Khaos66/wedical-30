@@ -37,7 +37,7 @@ router.get('/success',
             // Assign guestId
             user.guestId = guestid;
             let result = await user.save();
-            log += ' => ' + result;
+            log += ' => ' + result.guestId;
 
             log += '. Upd Guest: ' + guest._id;
             // assign email
@@ -46,7 +46,7 @@ router.get('/success',
             });
             guest.email = user.email;
             result = await guest.save();
-            log += ' => ' + result;
+            log += ' => ' + result.email;
         }
 
 
