@@ -141,7 +141,7 @@ div.container.my-4
       div.col-8
         div.card.bg-light.mb-3
           div.card-body.text-center
-            button.btn.btn-jumbo.btn-outline-success.w-50.my-3(data-toggle='modal', data-target="#ticketModal", disabled= claimedTickets>=parseInt(invite.tickets))= __('Claim a Ticket')
+            button.btn.btn-jumbo.btn-outline-success.my-3(data-toggle='modal', data-target="#ticketModal", disabled= claimedTickets>=parseInt(invite.tickets))= __('Claim a Ticket')
 
 div.modal.fade(role='dialog', tabindex='-1', id='declideModal')
   div.modal-dialog(role='document')
