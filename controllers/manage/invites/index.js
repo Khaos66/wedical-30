@@ -113,7 +113,7 @@ async function putInvite(req, res) {
 					var guest = await Guest.findOne({
 						_id: removeGuest
 					});
-					if (guest.state === 'invited') {
+					if (guest && guest.state === 'invited') {
 						guest.state = '';
 						await guest.save();
 					}

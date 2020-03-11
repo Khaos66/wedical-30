@@ -97,9 +97,7 @@ class Invite extends Model {
         if (this.type != 'wildcard') {
             this.tickets = 0;
         }
-        if (this.type != 'guestlist') {
-            this.guests = [];
-        } else if (!Array.isArray(this.guests)) {
+        if (!Array.isArray(this.guests)) {
             this.guests = [this.guests];
         }
     }

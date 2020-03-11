@@ -92,24 +92,52 @@ div.container.my-4
                 strong= __('We safe for our wedding later this year and a new car ;)')
     div.col-4
 
-  div.row.mt-1.aniview(data-av-animation="rotateInUpLeft")
-    div.col-8
-      div.card.bg-chat.mb-3
-        div.card-body
-          h5.card-text= __('Are you coming?')
-    div.col-4
+  if type == 'guestlist'
+    div.row.mt-1.aniview(data-av-animation="rotateInUpLeft")
+      div.col-8
+        div.card.bg-chat.mb-3
+          div.card-body
+            h5.card-text= __('Are you coming?')
+      div.col-4
 
-  div.row.mt-4.aniview(data-av-animation="slideInRight")
-    div.col-4
-    div.col-8
-      div.card.bg-light.mb-3
-        div.card-body
-          div.container
-            div.row
-              div.col.mt-1
-                +acceptBtn.btn.btn-outline-success.btn-lg.w-100.btn-jumbo
-              div.col.mt-1
-                a(href='#', data-toggle='modal', data-target="#declideModal").btn.btn-outline-danger.btn-lg.w-100.btn-jumbo= __('Decline')
+    div.row.mt-4.aniview(data-av-animation="slideInRight")
+      div.col-4
+      div.col-8
+        div.card.bg-light.mb-3
+          div.card-body
+            div.container
+              div.row
+                div.col.mt-1
+                  +acceptBtn.btn.btn-outline-success.btn-lg.w-100.btn-jumbo
+                div.col.mt-1
+                  a(href='#', data-toggle='modal', data-target="#declideModal").btn.btn-outline-danger.btn-lg.w-100.btn-jumbo= __('Decline')
+  //- Wildcards
+  else
+    div.row.mt-1.aniview(data-av-animation="rotateInUpLeft")
+      div.col-8
+        div.card.bg-chat.mb-3
+          div.card-title
+            h5.card-text= __('Sorry I can\'t invite all of you.')
+          div.card-body
+            p.h1
+              i.fas.fa-ticket-alt
+              |
+              |
+              = __('Tickets')
+              span.badge.badge-pill.badge-primary.mx-2
+                = invite.tickets-claimedTickets
+          div.card-body
+            div.progress
+              - let percent = Math.floor(1+(99*(claimedTickets/parseInt(invite.tickets))))
+              - let color = percent <= 33 ? 'bg-success' : percent <= 66 ? 'bg-warning' : 'bg-danger'
+              div.progress-bar.progress-bar-striped.progress-bar-animated(role="progressbar", class=`w-${percent} ${color}`, aria-valuenow=claimedTickets, aria-valuemin="0", aria-valuemax=invite.tickets)
+      div.col-4
+    div.row.mt-4.aniview(data-av-animation="slideInRight")
+      div.col-4
+      div.col-8
+        div.card.bg-light.mb-3
+          div.card-body.text-center
+            button.btn.btn-jumbo.btn-outline-success.w-25.my-3(data-toggle='modal', data-target="#ticketModal", disabled= claimedTickets>=parseInt(invite.tickets))= __('Claim a Ticket')
 
 div.modal.fade(role='dialog', tabindex='-1', id='declideModal')
   div.modal-dialog(role='document')
@@ -131,3 +159,24 @@ div.modal.fade(role='dialog', tabindex='-1', id='declideModal')
         +declineBtn.btn.btn-outline-warning.font-weight-bold
         button.btn.btn-outline-light.font-weight-bold(type='button', data-dismiss='modal')= __('Cancel')
 
+div.modal.fade(role='dialog', tabindex='-1', id='ticketModal')
+    div.modal-dialog(role='document')
+        div.modal-content
+            div.modal-header
+                h5.modal-title= __('Claim a Ticket')
+                button.close(type='button', data-dismiss='modal', aria-label=__('Close'))
+                    span(aria-hidden='true') &times;
+            div.modal-body
+              form.ajaxForm.needs-validation#ticketForm(method='post', action=`/invite/${invite.token}/claim`, data-error='#ticketFormError')
+                input(type='hidden', name='_csrf' value=csrfToken)
+                div.form-group
+                  label(for='name')= __('Full Name')
+                  input.form-control(type='text', name='name', id='name', placeholder=__('Enter your full name'), required)
+                div.form-group
+                  label(for='email')= __('Email')
+                  input.form-control(type='email', name='email', id='email', placeholder=__('Enter email address'), required)
+            div.modal-footer
+              div#ticketFormError.alert.alert-danger.collapse= __('Ticket can\'t be claimed')
+              div
+                button.btn.btn-primary.font-weight-bold.mx-2(type='submit', form='ticketForm')= __('Submit')
+                button.btn.btn-secondary.font-weight-bold(type='button', data-dismiss='modal')= __('Cancel')
