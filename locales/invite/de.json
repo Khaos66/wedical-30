@@ -57,5 +57,9 @@
     "Enter your full name": "Gibt deinen vollen Namen ein",
     "Enter email address": "Gib deine Email-Adresse ein",
     "Claim a Ticket": "Anmelden",
-    "Ticket can't be claimed": "Ticket konnte nicht beansprucht werden"
+    "Ticket can't be claimed": "Ticket konnte nicht beansprucht werden",
+    "Sorry, I can't invite all of you": "Leider kann ich euch nicht alle einladen",
+    "Tickets left": "Tickets übrig",
+    "Be fast to reply": "Sag' schnell zu",
+    "For now: Because of a restricted number of seats, please come without partners": "Da ich nur begrenzt Platz habe, kommt bitte vorerst ohne Anhang ;)"
 }

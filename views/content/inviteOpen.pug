@@ -116,28 +116,32 @@ div.container.my-4
     div.row.mt-1.aniview(data-av-animation="rotateInUpLeft")
       div.col-8
         div.card.bg-chat.mb-3
-          div.card-title
-            h5.card-text= __('Sorry I can\'t invite all of you.')
           div.card-body
-            p.h1
-              i.fas.fa-ticket-alt
-              |
-              |
-              = __('Tickets')
-              span.badge.badge-pill.badge-primary.mx-2
-                = invite.tickets-claimedTickets
-          div.card-body
-            div.progress
-              - let percent = Math.floor(1+(99*(claimedTickets/parseInt(invite.tickets))))
-              - let color = percent <= 33 ? 'bg-success' : percent <= 66 ? 'bg-warning' : 'bg-danger'
-              div.progress-bar.progress-bar-striped.progress-bar-animated(role="progressbar", class=`w-${percent} ${color}`, aria-valuenow=claimedTickets, aria-valuemin="0", aria-valuemax=invite.tickets)
+            h5.card-title= __('Sorry, I can\'t invite all of you')
+            div.card-text
+              p= __('Be fast to reply')
+              table.w-100
+                tr
+                  td.h3
+                    span.badge.badge-pill.badge-secondary.mx-2(data-toggle='tooltip' data-title= __('Tickets left'))
+                      span.font-weight-bold.text-warning= invite.tickets-claimedTickets
+                      |
+                      |
+                      i.fas.fa-ticket-alt
+                  td.w-100
+                    div.progress
+                      - let percent = Math.floor(1+(99*(claimedTickets/parseInt(invite.tickets))))
+                      - let color = percent <= 33 ? 'bg-success' : percent <= 66 ? 'bg-warning' : 'bg-danger'
+                      div.progress-bar.progress-bar-striped.progress-bar-animated(role="progressbar", class=`w-${percent} ${color}`, aria-valuenow=claimedTickets, aria-valuemin="0", aria-valuemax=invite.tickets)
+              p.mt-2
+                em= __('For now: Because of a restricted number of seats, please come without partners')
       div.col-4
     div.row.mt-4.aniview(data-av-animation="slideInRight")
       div.col-4
       div.col-8
         div.card.bg-light.mb-3
           div.card-body.text-center
-            button.btn.btn-jumbo.btn-outline-success.w-25.my-3(data-toggle='modal', data-target="#ticketModal", disabled= claimedTickets>=parseInt(invite.tickets))= __('Claim a Ticket')
+            button.btn.btn-jumbo.btn-outline-success.w-50.my-3(data-toggle='modal', data-target="#ticketModal", disabled= claimedTickets>=parseInt(invite.tickets))= __('Claim a Ticket')
 
 div.modal.fade(role='dialog', tabindex='-1', id='declideModal')
   div.modal-dialog(role='document')
