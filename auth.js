@@ -190,24 +190,25 @@ class Auth {
                     clientSecret: config.authProviders.google.clientSecret,
                     callbackURL: `${config.baseUrl}auth2/google/callback`
                 },
-                async function (accessToken, refreshToken, profile, done) {
-                    let user = await User.findOne({
+                function (accessToken, refreshToken, profile, done) {
+                    User.findOne({
                         googleId: profile.id
+                    }).then(async function (user, err) {
+                        if (err) {
+                            debug(`Error: ${JSON.stringify(err)}`);
+                            return done(err);
+                        }
+                        if (!user) {
+                            debug('ERROR: User unknown!');
+                            return done(null, null, profile);
+                        }
+
+                        // Aquire auth profile from user roles
+                        await Auth.compileAuthorization(user);
+
+                        debug(`User successsfuly logged-in: ${user.name}`);
+                        done(null, user);
                     });
-                    if (!user) {
-                        let guestRole = await Role.findOne({
-                            name: 'Guest'
-                        });
-                        user = await User.create({
-                            googleId: profile.id,
-                            strategy: Strategies.GOOGLE,
-                            name: profile.displayName,
-                            email: profile.emails[0].value,
-                            picture: profile.photos.length > 0 ? profile.photos[0].value : '',
-                            roles: [guestRole._id]
-                        });
-                    }
-                    done(undefined, user);
                 }
             ));
         }
@@ -222,24 +223,25 @@ class Auth {
                     callbackURL: `${config.baseUrl}auth2/facebook/callback`,
                     profileFields: ['id', 'emails', 'name', 'picture.type(large)']
                 },
-                async function (accessToken, refreshToken, profile, done) {
-                    let user = await User.findOne({
+                function (accessToken, refreshToken, profile, done) {
+                    User.findOne({
                         facebookId: profile.id
+                    }).then(async function (user, err) {
+                        if (err) {
+                            debug(`Error: ${JSON.stringify(err)}`);
+                            return done(err);
+                        }
+                        if (!user) {
+                            debug('ERROR: User unknown!');
+                            return done(null, null, profile);
+                        }
+
+                        // Aquire auth profile from user roles
+                        await Auth.compileAuthorization(user);
+
+                        debug(`User successsfuly logged-in: ${user.name}`);
+                        done(null, user);
                     });
-                    if (!user) {
-                        let guestRole = await Role.findOne({
-                            name: 'Guest'
-                        });
-                        user = await User.create({
-                            facebookId: profile.id,
-                            strategy: Strategies.FACEBOOK,
-                            name: `${profile.name.givenName} ${profile.name.familyName}`,
-                            email: profile.emails[0].value,
-                            picture: profile.photos.length > 0 ? profile.photos[0].value : '',
-                            roles: [guestRole._id]
-                        });
-                    }
-                    done(undefined, user);
                 }
             ));
         }
