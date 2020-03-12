@@ -20,6 +20,8 @@ router.get('/google/callback', function (req, res, next) {
 
         let guestid = req.session.guestid;
         req.session.guestid = '';
+        let redirect_url = req.session.redirect_url || '/profile';
+        req.session.redirect_url = '';
 
         if (!user) {
             if (req.session.auth_action == 'register' && info && guestid) {
@@ -49,9 +51,9 @@ router.get('/google/callback', function (req, res, next) {
             } else {
                 req.flash('error', {
                     param: 'Auth',
-                    msg: 'You don\'t seem to be invited'
+                    msg: res.__('You don\'t seem to be invited')
                 });
-                return res.redirect('/login');
+                return res.redirect('/login?redirect_url=' + encodeURIComponent(redirect_url));
             }
         }
 
@@ -59,8 +61,6 @@ router.get('/google/callback', function (req, res, next) {
             if (err) {
                 return next(err);
             }
-            let redirect_url = req.session.redirect_url || '/profile';
-            req.session.redirect_url = '';
             return res.redirect(redirect_url);
         });
     })(req, res, next);
@@ -89,6 +89,8 @@ router.get('/facebook/callback', function (req, res, next) {
 
         let guestid = req.session.guestid;
         req.session.guestid = '';
+        let redirect_url = req.session.redirect_url || '/profile';
+        req.session.redirect_url = '';
 
         if (!user) {
             if (req.session.auth_action == 'register' && info && guestid) {
@@ -118,9 +120,9 @@ router.get('/facebook/callback', function (req, res, next) {
             } else {
                 req.flash('error', {
                     param: 'Auth',
-                    msg: 'You don\'t seem to be invited'
+                    msg: res.__('You don\'t seem to be invited')
                 });
-                return res.redirect('/login');
+                return res.redirect('/login?redirect_url=' + encodeURIComponent(redirect_url));
             }
         }
 
@@ -128,8 +130,6 @@ router.get('/facebook/callback', function (req, res, next) {
             if (err) {
                 return next(err);
             }
-            let redirect_url = req.session.redirect_url || '/profile';
-            req.session.redirect_url = '';
             return res.redirect(redirect_url);
         });
     })(req, res, next);
